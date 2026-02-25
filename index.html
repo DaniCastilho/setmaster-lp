@@ -214,13 +214,14 @@
 
       .hero-title {
         font-family: var(--font-head);
-        font-size: clamp(40px, 8.5vw, 86px);
+        font-size: clamp(32px, 5.5vw, 62px);
         font-weight: 800;
         color: var(--bright);
-        letter-spacing: -3px;
-        line-height: 0.97;
-        max-width: 860px;
+        letter-spacing: -2px;
+        line-height: 1.05;
+        max-width: 720px;
         position: relative;
+        margin: 0 auto;
         animation: fadeUp 0.55s 0.08s ease both;
       }
       .hero-title em {
@@ -229,12 +230,12 @@
       }
 
       .hero-sub {
-        font-size: clamp(16px, 2.3vw, 20px);
+        font-size: clamp(15px, 1.8vw, 18px);
         font-weight: 300;
         color: var(--sub);
-        max-width: 480px;
+        max-width: 460px;
         line-height: 1.65;
-        margin-top: 26px;
+        margin: 24px auto 0;
         position: relative;
         animation: fadeUp 0.55s 0.16s ease both;
       }
@@ -242,8 +243,8 @@
       /* ─── FORM ─── */
       .hero-form-wrap {
         width: 100%;
-        max-width: 480px;
-        margin-top: 48px;
+        max-width: 460px;
+        margin: 44px auto 0;
         position: relative;
         animation: fadeUp 0.55s 0.24s ease both;
         display: flex;
@@ -382,24 +383,34 @@
       }
       .section-title {
         font-family: var(--font-head);
-        font-size: clamp(28px, 4.5vw, 46px);
+        font-size: clamp(24px, 3.5vw, 40px);
         font-weight: 800;
         color: var(--bright);
-        letter-spacing: -1.2px;
-        line-height: 1.08;
-        max-width: 640px;
+        letter-spacing: -1px;
+        line-height: 1.1;
+        max-width: 600px;
       }
       .section-sub {
-        font-size: 17px;
+        font-size: 16px;
         font-weight: 300;
         color: var(--sub);
         line-height: 1.7;
-        max-width: 520px;
+        max-width: 500px;
         margin-top: 14px;
       }
       .divider {
         border: none;
         border-top: 1px solid var(--line);
+      }
+
+      /* mobile section centering */
+      @media (max-width: 640px) {
+        .section-title {
+          font-size: clamp(22px, 6vw, 32px);
+        }
+        .section-sub {
+          font-size: 15px;
+        }
       }
 
       /* ─── PAIN ─── */
@@ -808,12 +819,12 @@
       }
       .final-title {
         font-family: var(--font-head);
-        font-size: clamp(32px, 5.5vw, 58px);
+        font-size: clamp(28px, 4vw, 50px);
         font-weight: 800;
         color: var(--bright);
-        letter-spacing: -1.8px;
-        line-height: 1.04;
-        max-width: 680px;
+        letter-spacing: -1.5px;
+        line-height: 1.06;
+        max-width: 620px;
         margin: 0 auto 16px;
         position: relative;
       }
@@ -875,13 +886,19 @@
       /* ─── RESPONSIVE TWEAKS ─── */
       @media (max-width: 600px) {
         .section {
-          padding: 72px 18px;
+          padding: 64px 18px;
         }
         .form-row {
           flex-direction: column;
         }
         .hero-title {
-          letter-spacing: -2px;
+          letter-spacing: -1.5px;
+        }
+        .pricing-wrap {
+          max-width: 100%;
+        }
+        .steps-wrap {
+          max-width: 100%;
         }
       }
       @media (max-width: 400px) {
