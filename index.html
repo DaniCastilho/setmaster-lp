@@ -380,6 +380,7 @@
         text-transform: uppercase;
         color: var(--accent);
         margin-bottom: 14px;
+        text-align: center;
       }
       .section-title {
         font-family: var(--font-head);
@@ -388,15 +389,18 @@
         color: var(--bright);
         letter-spacing: -1px;
         line-height: 1.1;
-        max-width: 600px;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
       }
       .section-sub {
         font-size: 16px;
         font-weight: 300;
         color: var(--sub);
         line-height: 1.7;
-        max-width: 500px;
-        margin-top: 14px;
+        max-width: 560px;
+        margin: 14px auto 0;
+        text-align: center;
       }
       .divider {
         border: none;
@@ -538,8 +542,8 @@
         display: flex;
         flex-direction: column;
         gap: 0;
-        margin-top: 56px;
-        max-width: 580px;
+        margin: 56px auto 0;
+        max-width: 560px;
       }
       .step {
         display: flex;
@@ -599,7 +603,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
-        margin-top: 56px;
+        margin: 56px auto 0;
         max-width: 700px;
       }
       @media (max-width: 620px) {
@@ -738,8 +742,9 @@
       .pricing-note {
         font-size: 13px;
         color: var(--muted);
-        margin-top: 20px;
-        max-width: 440px;
+        margin: 20px auto 0;
+        max-width: 500px;
+        text-align: center;
       }
 
       /* ─── TESTIMONIALS ─── */
@@ -881,6 +886,12 @@
       .reveal.visible {
         opacity: 1;
         transform: none;
+      }
+      .reveal-head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
       }
 
       /* ─── RESPONSIVE TWEAKS ─── */
@@ -1028,7 +1039,7 @@
 
     <!-- ════ PROBLEMA ════ -->
     <section class="section" aria-labelledby="problem-heading">
-      <div class="reveal">
+      <div class="reveal reveal-head">
         <p class="section-tag">O problema</p>
         <h2 class="section-title" id="problem-heading">
           Você é bom no palco. Fora dele, é outro jogo.
@@ -1121,7 +1132,7 @@
     <!-- ════ FEATURES ════ -->
     <section class="features-bg" aria-labelledby="features-heading">
       <div class="section" style="padding-bottom: 0">
-        <div class="reveal">
+        <div class="reveal reveal-head">
           <p class="section-tag">A solução</p>
           <h2 class="section-title" id="features-heading">
             Gestão de show do jeito que o freelancer precisa.
@@ -1250,7 +1261,7 @@
 
     <!-- ════ COMO FUNCIONA ════ -->
     <section class="section" aria-labelledby="how-heading">
-      <div class="reveal">
+      <div class="reveal reveal-head">
         <p class="section-tag">Como funciona</p>
         <h2 class="section-title" id="how-heading">
           Do caos do WhatsApp à carreira organizada.
@@ -1308,7 +1319,7 @@
 
     <!-- ════ TESTEMUNHOS ════ -->
     <section class="section" aria-labelledby="testi-heading">
-      <div class="reveal">
+      <div class="reveal reveal-head">
         <p class="section-tag">Beta testers</p>
         <h2 class="section-title" id="testi-heading">
           Músicos que testaram antes de você.
@@ -1369,7 +1380,7 @@
       aria-labelledby="pricing-heading"
       style="padding-top: 0"
     >
-      <div class="reveal">
+      <div class="reveal reveal-head">
         <p class="section-tag">Planos</p>
         <h2 class="section-title" id="pricing-heading">
           Grátis para começar. Pro quando você crescer.
