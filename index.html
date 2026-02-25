@@ -1,713 +1,1556 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SetMaster — Você recebeu o setlist. O show é em 48h.</title>
-<meta name="description" content="O app para músico freelancer que chega preparado. Organize setlists, estude com foco e controle seus cachês — tudo num só lugar.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-<style>
-/* ─── TOKENS ─── */
-:root {
-  --bg:    #080809;
-  --bg2:   #0F0F11;
-  --bg3:   #161618;
-  --bg4:   #1E1E22;
-  --line:  #222226;
-  --muted: #44445A;
-  --sub:   #7A7A90;
-  --text:  #C8C8D8;
-  --bright:#FFFFFF;
-  --accent:#C8FF3E;
-  --gold:  #FFB830;
-  --green: #3EFF8B;
-  --red:   #FF5C5C;
-  --blue:  #5C9EFF;
-  --r:     16px;
-  --font-head: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SetMaster — Você recebeu o setlist. O show é em 48h.</title>
+    <meta
+      name="description"
+      content="O app para músico freelancer que chega preparado. Organize setlists, estude com foco e controle seus cachês — tudo num só lugar."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ─── TOKENS ─── */
+      :root {
+        --bg: #080809;
+        --bg2: #0f0f11;
+        --bg3: #161618;
+        --bg4: #1e1e22;
+        --line: #222226;
+        --muted: #44445a;
+        --sub: #7a7a90;
+        --text: #c8c8d8;
+        --bright: #ffffff;
+        --accent: #c8ff3e;
+        --gold: #ffb830;
+        --green: #3eff8b;
+        --red: #ff5c5c;
+        --blue: #5c9eff;
+        --r: 16px;
+        --font-head: "Syne", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+      }
 
-/* ─── RESET ─── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
-body{font-family:var(--font-body);background:var(--bg);color:var(--text);overflow-x:hidden;}
-img{max-width:100%;display:block;}
-a{color:inherit;text-decoration:none;}
-button{font-family:var(--font-body);cursor:pointer;border:none;background:none;}
+      /* ─── RESET ─── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        font-family: var(--font-body);
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        font-family: var(--font-body);
+        cursor: pointer;
+        border: none;
+        background: none;
+      }
 
-/* ─── NOISE OVERLAY ─── */
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  opacity:.4;
-}
+      /* ─── NOISE OVERLAY ─── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1000;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+        opacity: 0.4;
+      }
 
-/* ─── NAV ─── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 32px;
-  background:rgba(8,8,9,.88);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,255,255,.05);
-}
-.nav-logo{
-  font-family:var(--font-head);font-size:18px;font-weight:800;letter-spacing:-.5px;
-  color:var(--bright);display:flex;align-items:center;gap:9px;
-}
-.nav-cta{
-  font-size:13px;font-weight:500;color:var(--bg);
-  background:var(--accent);border-radius:10px;padding:9px 20px;
-  transition:opacity .15s,transform .15s;
-}
-.nav-cta:hover{opacity:.88;transform:translateY(-1px);}
-@media(max-width:480px){nav{padding:14px 18px;} .nav-cta{font-size:12px;padding:8px 14px;}}
+      /* ─── NAV ─── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 32px;
+        background: rgba(8, 8, 9, 0.88);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .nav-logo {
+        font-family: var(--font-head);
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--bright);
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .nav-cta {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--bg);
+        background: var(--accent);
+        border-radius: 10px;
+        padding: 9px 20px;
+        transition:
+          opacity 0.15s,
+          transform 0.15s;
+      }
+      .nav-cta:hover {
+        opacity: 0.88;
+        transform: translateY(-1px);
+      }
+      @media (max-width: 480px) {
+        nav {
+          padding: 14px 18px;
+        }
+        .nav-cta {
+          font-size: 12px;
+          padding: 8px 14px;
+        }
+      }
 
-/* ─── HERO ─── */
-.hero{
-  min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;text-align:center;
-  padding:140px 20px 90px;position:relative;overflow:hidden;
-}
-.hero-grid{
-  position:absolute;inset:0;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(200,255,62,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200,255,62,.035) 1px, transparent 1px);
-  background-size:56px 56px;
-  mask-image:radial-gradient(ellipse 75% 55% at 50% 50%, black 0%, transparent 100%);
-  -webkit-mask-image:radial-gradient(ellipse 75% 55% at 50% 50%, black 0%, transparent 100%);
-}
-.hero-glow{
-  position:absolute;width:720px;height:420px;
-  background:radial-gradient(ellipse, rgba(200,255,62,.07) 0%, transparent 68%);
-  top:45%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
-}
+      /* ─── HERO ─── */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 140px 20px 90px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-grid {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(200, 255, 62, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(200, 255, 62, 0.035) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(
+          ellipse 75% 55% at 50% 50%,
+          black 0%,
+          transparent 100%
+        );
+        -webkit-mask-image: radial-gradient(
+          ellipse 75% 55% at 50% 50%,
+          black 0%,
+          transparent 100%
+        );
+      }
+      .hero-glow {
+        position: absolute;
+        width: 720px;
+        height: 420px;
+        background: radial-gradient(
+          ellipse,
+          rgba(200, 255, 62, 0.07) 0%,
+          transparent 68%
+        );
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
 
-.badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(200,255,62,.08);border:1px solid rgba(200,255,62,.2);
-  border-radius:100px;padding:6px 15px;margin-bottom:32px;
-  font-size:12px;font-weight:500;color:var(--accent);letter-spacing:.3px;
-  position:relative;
-  animation:fadeUp .55s ease both;
-}
-.badge-dot{
-  width:6px;height:6px;border-radius:50%;background:var(--accent);
-  animation:pulse 2.2s ease infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.65)}}
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(200, 255, 62, 0.08);
+        border: 1px solid rgba(200, 255, 62, 0.2);
+        border-radius: 100px;
+        padding: 6px 15px;
+        margin-bottom: 32px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--accent);
+        letter-spacing: 0.3px;
+        position: relative;
+        animation: fadeUp 0.55s ease both;
+      }
+      .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 2.2s ease infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.35;
+          transform: scale(0.65);
+        }
+      }
 
-.hero-title{
-  font-family:var(--font-head);font-size:clamp(40px,8.5vw,86px);
-  font-weight:800;color:var(--bright);letter-spacing:-3px;line-height:.97;
-  max-width:860px;position:relative;
-  animation:fadeUp .55s .08s ease both;
-}
-.hero-title em{font-style:normal;color:var(--accent);}
+      .hero-title {
+        font-family: var(--font-head);
+        font-size: clamp(40px, 8.5vw, 86px);
+        font-weight: 800;
+        color: var(--bright);
+        letter-spacing: -3px;
+        line-height: 0.97;
+        max-width: 860px;
+        position: relative;
+        animation: fadeUp 0.55s 0.08s ease both;
+      }
+      .hero-title em {
+        font-style: normal;
+        color: var(--accent);
+      }
 
-.hero-sub{
-  font-size:clamp(16px,2.3vw,20px);font-weight:300;color:var(--sub);
-  max-width:480px;line-height:1.65;margin-top:26px;position:relative;
-  animation:fadeUp .55s .16s ease both;
-}
+      .hero-sub {
+        font-size: clamp(16px, 2.3vw, 20px);
+        font-weight: 300;
+        color: var(--sub);
+        max-width: 480px;
+        line-height: 1.65;
+        margin-top: 26px;
+        position: relative;
+        animation: fadeUp 0.55s 0.16s ease both;
+      }
 
-/* ─── FORM ─── */
-.hero-form-wrap{
-  width:100%;max-width:480px;margin-top:48px;position:relative;
-  animation:fadeUp .55s .24s ease both;
-  display:flex;flex-direction:column;gap:10px;
-}
-.form-row{display:flex;gap:8px;}
-.finput{
-  width:100%;font-family:var(--font-body);font-size:15px;
-  background:var(--bg3);border:1px solid var(--line);border-radius:12px;
-  padding:14px 16px;color:var(--bright);outline:none;
-  transition:border-color .2s;
-}
-.finput::placeholder{color:var(--muted);}
-.finput:focus{border-color:rgba(200,255,62,.45);}
-.btn-primary{
-  width:100%;font-family:var(--font-head);font-size:16px;font-weight:700;
-  color:var(--bg);background:var(--accent);border-radius:12px;
-  padding:17px 32px;letter-spacing:-.3px;
-  box-shadow:0 8px 36px rgba(200,255,62,.22);
-  transition:transform .15s,box-shadow .15s;
-}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 48px rgba(200,255,62,.35);}
-.form-note{font-size:12px;color:var(--muted);text-align:center;}
-.success-msg{
-  display:none;background:rgba(200,255,62,.07);
-  border:1px solid rgba(200,255,62,.2);border-radius:12px;
-  padding:22px 24px;text-align:center;
-}
-.success-msg.show{display:block;}
-.success-msg strong{font-family:var(--font-head);font-size:16px;color:var(--accent);display:block;margin-bottom:6px;}
-.success-msg p{font-size:13px;color:var(--sub);}
+      /* ─── FORM ─── */
+      .hero-form-wrap {
+        width: 100%;
+        max-width: 480px;
+        margin-top: 48px;
+        position: relative;
+        animation: fadeUp 0.55s 0.24s ease both;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .form-row {
+        display: flex;
+        gap: 8px;
+      }
+      .finput {
+        width: 100%;
+        font-family: var(--font-body);
+        font-size: 15px;
+        background: var(--bg3);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 16px;
+        color: var(--bright);
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .finput::placeholder {
+        color: var(--muted);
+      }
+      .finput:focus {
+        border-color: rgba(200, 255, 62, 0.45);
+      }
+      .btn-primary {
+        width: 100%;
+        font-family: var(--font-head);
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--bg);
+        background: var(--accent);
+        border-radius: 12px;
+        padding: 17px 32px;
+        letter-spacing: -0.3px;
+        box-shadow: 0 8px 36px rgba(200, 255, 62, 0.22);
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 48px rgba(200, 255, 62, 0.35);
+      }
+      .form-note {
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
+      }
+      .success-msg {
+        display: none;
+        background: rgba(200, 255, 62, 0.07);
+        border: 1px solid rgba(200, 255, 62, 0.2);
+        border-radius: 12px;
+        padding: 22px 24px;
+        text-align: center;
+      }
+      .success-msg.show {
+        display: block;
+      }
+      .success-msg strong {
+        font-family: var(--font-head);
+        font-size: 16px;
+        color: var(--accent);
+        display: block;
+        margin-bottom: 6px;
+      }
+      .success-msg p {
+        font-size: 13px;
+        color: var(--sub);
+      }
 
-/* social proof */
-.social-proof{
-  display:flex;align-items:center;gap:13px;margin-top:38px;
-  animation:fadeUp .55s .32s ease both;position:relative;
-}
-.avatars{display:flex;}
-.av{
-  width:28px;height:28px;border-radius:50%;border:2px solid var(--bg);
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;color:var(--bg);margin-left:-8px;
-}
-.av:first-child{margin-left:0;}
-.sp-text{font-size:13px;color:var(--muted);}
-.sp-text strong{color:var(--sub);}
+      /* social proof */
+      .social-proof {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-top: 38px;
+        animation: fadeUp 0.55s 0.32s ease both;
+        position: relative;
+      }
+      .avatars {
+        display: flex;
+      }
+      .av {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--bg);
+        margin-left: -8px;
+      }
+      .av:first-child {
+        margin-left: 0;
+      }
+      .sp-text {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .sp-text strong {
+        color: var(--sub);
+      }
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
 
-/* ─── SECTIONS BASE ─── */
-.section{max-width:1080px;margin:0 auto;padding:96px 24px;}
-.section-tag{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
-.section-title{font-family:var(--font-head);font-size:clamp(28px,4.5vw,46px);font-weight:800;color:var(--bright);letter-spacing:-1.2px;line-height:1.08;max-width:640px;}
-.section-sub{font-size:17px;font-weight:300;color:var(--sub);line-height:1.7;max-width:520px;margin-top:14px;}
-.divider{border:none;border-top:1px solid var(--line);}
+      /* ─── SECTIONS BASE ─── */
+      .section {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 96px 24px;
+      }
+      .section-tag {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 14px;
+      }
+      .section-title {
+        font-family: var(--font-head);
+        font-size: clamp(28px, 4.5vw, 46px);
+        font-weight: 800;
+        color: var(--bright);
+        letter-spacing: -1.2px;
+        line-height: 1.08;
+        max-width: 640px;
+      }
+      .section-sub {
+        font-size: 17px;
+        font-weight: 300;
+        color: var(--sub);
+        line-height: 1.7;
+        max-width: 520px;
+        margin-top: 14px;
+      }
+      .divider {
+        border: none;
+        border-top: 1px solid var(--line);
+      }
 
-/* ─── PAIN ─── */
-.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:52px;}
-@media(max-width:780px){.pain-grid{grid-template-columns:1fr;}}
-.pain-card{
-  background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);
-  padding:32px 26px;transition:border-color .25s;
-}
-.pain-card:hover{border-color:rgba(255,255,255,.1);}
-.pain-icon{font-size:32px;margin-bottom:16px;display:block;}
-.pain-title{font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--bright);margin-bottom:10px;}
-.pain-text{font-size:14px;color:var(--sub);line-height:1.7;}
+      /* ─── PAIN ─── */
+      .pain-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 52px;
+      }
+      @media (max-width: 780px) {
+        .pain-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .pain-card {
+        background: var(--bg2);
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        padding: 32px 26px;
+        transition: border-color 0.25s;
+      }
+      .pain-card:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      .pain-icon {
+        font-size: 32px;
+        margin-bottom: 16px;
+        display: block;
+      }
+      .pain-title {
+        font-family: var(--font-head);
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--bright);
+        margin-bottom: 10px;
+      }
+      .pain-text {
+        font-size: 14px;
+        color: var(--sub);
+        line-height: 1.7;
+      }
 
-/* ─── FEATURES ─── */
-.features-bg{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:52px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;}
-@media(max-width:640px){.feat-grid{grid-template-columns:1fr;}}
-.feat-cell{
-  background:var(--bg3);padding:36px 30px;position:relative;
-  overflow:hidden;transition:background .2s;
-}
-.feat-cell:hover{background:var(--bg4);}
-.feat-cell::before{
-  content:'';position:absolute;top:0;left:0;width:3px;height:0;
-  background:var(--accent);transition:height .35s ease;border-radius:0 3px 3px 0;
-}
-.feat-cell:hover::before{height:100%;}
-.feat-num{font-family:var(--font-head);font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:22px;}
-.feat-icon{margin-bottom:16px;display:block;}
-.feat-title{font-family:var(--font-head);font-size:19px;font-weight:700;color:var(--bright);letter-spacing:-.3px;margin-bottom:9px;}
-.feat-text{font-size:14px;color:var(--sub);line-height:1.7;}
-.feat-tag{display:inline-block;margin-top:14px;font-size:11px;font-weight:600;color:var(--accent);background:rgba(200,255,62,.08);border-radius:7px;padding:3px 10px;}
+      /* ─── FEATURES ─── */
+      .features-bg {
+        background: var(--bg2);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .feat-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2px;
+        margin-top: 52px;
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        overflow: hidden;
+      }
+      @media (max-width: 640px) {
+        .feat-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .feat-cell {
+        background: var(--bg3);
+        padding: 36px 30px;
+        position: relative;
+        overflow: hidden;
+        transition: background 0.2s;
+      }
+      .feat-cell:hover {
+        background: var(--bg4);
+      }
+      .feat-cell::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 0;
+        background: var(--accent);
+        transition: height 0.35s ease;
+        border-radius: 0 3px 3px 0;
+      }
+      .feat-cell:hover::before {
+        height: 100%;
+      }
+      .feat-num {
+        font-family: var(--font-head);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--muted);
+        margin-bottom: 22px;
+      }
+      .feat-icon {
+        margin-bottom: 16px;
+        display: block;
+      }
+      .feat-title {
+        font-family: var(--font-head);
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--bright);
+        letter-spacing: -0.3px;
+        margin-bottom: 9px;
+      }
+      .feat-text {
+        font-size: 14px;
+        color: var(--sub);
+        line-height: 1.7;
+      }
+      .feat-tag {
+        display: inline-block;
+        margin-top: 14px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--accent);
+        background: rgba(200, 255, 62, 0.08);
+        border-radius: 7px;
+        padding: 3px 10px;
+      }
 
-/* ─── STEPS ─── */
-.steps-wrap{display:flex;flex-direction:column;gap:0;margin-top:56px;max-width:580px;}
-.step{display:flex;gap:26px;padding-bottom:44px;}
-.step:last-child{padding-bottom:0;}
-.step-l{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
-.step-num{
-  width:38px;height:38px;border-radius:50%;
-  background:var(--bg3);border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--accent);
-}
-.step-line{width:1px;flex:1;background:var(--line);margin-top:8px;}
-.step:last-child .step-line{display:none;}
-.step-body{padding-top:7px;}
-.step-title{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--bright);margin-bottom:7px;}
-.step-text{font-size:14px;color:var(--sub);line-height:1.7;}
+      /* ─── STEPS ─── */
+      .steps-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin-top: 56px;
+        max-width: 580px;
+      }
+      .step {
+        display: flex;
+        gap: 26px;
+        padding-bottom: 44px;
+      }
+      .step:last-child {
+        padding-bottom: 0;
+      }
+      .step-l {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .step-num {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--bg3);
+        border: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-head);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .step-line {
+        width: 1px;
+        flex: 1;
+        background: var(--line);
+        margin-top: 8px;
+      }
+      .step:last-child .step-line {
+        display: none;
+      }
+      .step-body {
+        padding-top: 7px;
+      }
+      .step-title {
+        font-family: var(--font-head);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--bright);
+        margin-bottom: 7px;
+      }
+      .step-text {
+        font-size: 14px;
+        color: var(--sub);
+        line-height: 1.7;
+      }
 
-/* ─── PRICING ─── */
-.pricing-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:56px;max-width:700px;}
-@media(max-width:620px){.pricing-wrap{grid-template-columns:1fr;}}
-.plan{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:34px 28px;}
-.plan-pro{
-  background:linear-gradient(150deg,#141A00 0%,#0C1200 100%);
-  border-color:rgba(200,255,62,.3);position:relative;overflow:hidden;
-}
-.plan-pro::before{
-  content:'';position:absolute;top:-70px;right:-70px;
-  width:220px;height:220px;
-  background:radial-gradient(circle,rgba(200,255,62,.09) 0%,transparent 70%);
-  pointer-events:none;
-}
-.plan-badge{
-  display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--bg);background:var(--accent);
-  border-radius:6px;padding:3px 10px;margin-bottom:22px;
-}
-.plan-name{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--bright);}
-.plan-price{
-  font-family:var(--font-head);font-size:42px;font-weight:800;
-  color:var(--bright);letter-spacing:-2px;margin:16px 0 4px;
-  display:flex;align-items:baseline;gap:3px;
-}
-.plan-price span{font-size:14px;font-weight:400;color:var(--sub);letter-spacing:0;}
-.plan-sub{font-size:12px;color:var(--muted);margin-bottom:28px;}
-.plan-features{list-style:none;display:flex;flex-direction:column;gap:11px;}
-.plan-features li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--sub);line-height:1.45;}
-.chk-ico{
-  flex-shrink:0;width:17px;height:17px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:9px;margin-top:1px;
-}
-.plan .chk-ico{background:rgba(255,255,255,.07);color:var(--muted);}
-.plan-pro .chk-ico{background:rgba(200,255,62,.15);color:var(--accent);}
-.plan-btn{
-  width:100%;margin-top:30px;font-family:var(--font-head);font-size:15px;font-weight:700;
-  border-radius:12px;padding:14px;letter-spacing:-.2px;transition:all .15s;
-}
-.plan-btn-free{background:transparent;border:1px solid var(--line);color:var(--sub);}
-.plan-btn-free:hover{border-color:var(--muted);color:var(--text);}
-.plan-btn-pro{background:var(--accent);color:var(--bg);box-shadow:0 6px 28px rgba(200,255,62,.18);}
-.plan-btn-pro:hover{box-shadow:0 10px 40px rgba(200,255,62,.34);transform:translateY(-1px);}
-.pricing-note{font-size:13px;color:var(--muted);margin-top:20px;max-width:440px;}
+      /* ─── PRICING ─── */
+      .pricing-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 56px;
+        max-width: 700px;
+      }
+      @media (max-width: 620px) {
+        .pricing-wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+      .plan {
+        background: var(--bg2);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 34px 28px;
+      }
+      .plan-pro {
+        background: linear-gradient(150deg, #141a00 0%, #0c1200 100%);
+        border-color: rgba(200, 255, 62, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+      .plan-pro::before {
+        content: "";
+        position: absolute;
+        top: -70px;
+        right: -70px;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(
+          circle,
+          rgba(200, 255, 62, 0.09) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .plan-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--bg);
+        background: var(--accent);
+        border-radius: 6px;
+        padding: 3px 10px;
+        margin-bottom: 22px;
+      }
+      .plan-name {
+        font-family: var(--font-head);
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--bright);
+      }
+      .plan-price {
+        font-family: var(--font-head);
+        font-size: 42px;
+        font-weight: 800;
+        color: var(--bright);
+        letter-spacing: -2px;
+        margin: 16px 0 4px;
+        display: flex;
+        align-items: baseline;
+        gap: 3px;
+      }
+      .plan-price span {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--sub);
+        letter-spacing: 0;
+      }
+      .plan-sub {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 28px;
+      }
+      .plan-features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+      }
+      .plan-features li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--sub);
+        line-height: 1.45;
+      }
+      .chk-ico {
+        flex-shrink: 0;
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        margin-top: 1px;
+      }
+      .plan .chk-ico {
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--muted);
+      }
+      .plan-pro .chk-ico {
+        background: rgba(200, 255, 62, 0.15);
+        color: var(--accent);
+      }
+      .plan-btn {
+        width: 100%;
+        margin-top: 30px;
+        font-family: var(--font-head);
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 14px;
+        letter-spacing: -0.2px;
+        transition: all 0.15s;
+      }
+      .plan-btn-free {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--sub);
+      }
+      .plan-btn-free:hover {
+        border-color: var(--muted);
+        color: var(--text);
+      }
+      .plan-btn-pro {
+        background: var(--accent);
+        color: var(--bg);
+        box-shadow: 0 6px 28px rgba(200, 255, 62, 0.18);
+      }
+      .plan-btn-pro:hover {
+        box-shadow: 0 10px 40px rgba(200, 255, 62, 0.34);
+        transform: translateY(-1px);
+      }
+      .pricing-note {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 20px;
+        max-width: 440px;
+      }
 
-/* ─── TESTIMONIALS ─── */
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:52px;}
-@media(max-width:780px){.testi-grid{grid-template-columns:1fr;}}
-.testi{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;}
-.testi-quote{
-  font-size:14px;font-style:italic;font-weight:300;
-  color:var(--text);line-height:1.75;margin-bottom:22px;
-}
-.testi-author{display:flex;align-items:center;gap:11px;}
-.testi-av{
-  width:34px;height:34px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;color:var(--bg);flex-shrink:0;
-}
-.testi-name{font-size:13px;font-weight:600;color:var(--bright);}
-.testi-role{font-size:12px;color:var(--muted);margin-top:2px;}
+      /* ─── TESTIMONIALS ─── */
+      .testi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 52px;
+      }
+      @media (max-width: 780px) {
+        .testi-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .testi {
+        background: var(--bg2);
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        padding: 26px 24px;
+      }
+      .testi-quote {
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 300;
+        color: var(--text);
+        line-height: 1.75;
+        margin-bottom: 22px;
+      }
+      .testi-author {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+      .testi-av {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--bg);
+        flex-shrink: 0;
+      }
+      .testi-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--bright);
+      }
+      .testi-role {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
 
-/* ─── FINAL CTA ─── */
-.final-section{
-  text-align:center;padding:110px 24px;
-  position:relative;overflow:hidden;
-}
-.final-glow{
-  position:absolute;width:900px;height:450px;
-  background:radial-gradient(ellipse,rgba(200,255,62,.055) 0%,transparent 65%);
-  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
-}
-.final-title{
-  font-family:var(--font-head);font-size:clamp(32px,5.5vw,58px);
-  font-weight:800;color:var(--bright);letter-spacing:-1.8px;line-height:1.04;
-  max-width:680px;margin:0 auto 16px;position:relative;
-}
-.final-title em{font-style:normal;color:var(--accent);}
-.final-sub{font-size:18px;font-weight:300;color:var(--sub);max-width:420px;margin:0 auto 52px;position:relative;}
-.final-form{
-  display:flex;flex-direction:column;align-items:center;
-  gap:10px;max-width:420px;margin:0 auto;position:relative;
-}
+      /* ─── FINAL CTA ─── */
+      .final-section {
+        text-align: center;
+        padding: 110px 24px;
+        position: relative;
+        overflow: hidden;
+      }
+      .final-glow {
+        position: absolute;
+        width: 900px;
+        height: 450px;
+        background: radial-gradient(
+          ellipse,
+          rgba(200, 255, 62, 0.055) 0%,
+          transparent 65%
+        );
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+      .final-title {
+        font-family: var(--font-head);
+        font-size: clamp(32px, 5.5vw, 58px);
+        font-weight: 800;
+        color: var(--bright);
+        letter-spacing: -1.8px;
+        line-height: 1.04;
+        max-width: 680px;
+        margin: 0 auto 16px;
+        position: relative;
+      }
+      .final-title em {
+        font-style: normal;
+        color: var(--accent);
+      }
+      .final-sub {
+        font-size: 18px;
+        font-weight: 300;
+        color: var(--sub);
+        max-width: 420px;
+        margin: 0 auto 52px;
+        position: relative;
+      }
+      .final-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        max-width: 420px;
+        margin: 0 auto;
+        position: relative;
+      }
 
-/* ─── FOOTER ─── */
-footer{
-  border-top:1px solid var(--line);padding:32px 24px;
-  text-align:center;font-size:13px;color:var(--muted);
-}
-footer strong{font-family:var(--font-head);color:var(--sub);}
-footer a{color:var(--muted);transition:color .15s;}
-footer a:hover{color:var(--sub);}
+      /* ─── FOOTER ─── */
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 32px 24px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      footer strong {
+        font-family: var(--font-head);
+        color: var(--sub);
+      }
+      footer a {
+        color: var(--muted);
+        transition: color 0.15s;
+      }
+      footer a:hover {
+        color: var(--sub);
+      }
 
-/* ─── REVEAL ─── */
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .65s ease,transform .65s ease;}
-.reveal.visible{opacity:1;transform:none;}
+      /* ─── REVEAL ─── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
 
-/* ─── RESPONSIVE TWEAKS ─── */
-@media(max-width:600px){
-  .section{padding:72px 18px;}
-  .form-row{flex-direction:column;}
-  .hero-title{letter-spacing:-2px;}
-}
-@media(max-width:400px){
-  nav{padding:12px 16px;}
-  .nav-logo{font-size:16px;}
-}
-</style>
-</head>
-<body>
-
-<!-- ════ NAV ════ -->
-<nav>
-  <div class="nav-logo">
-    <svg width="22" height="22" viewBox="0 0 160 160" fill="none" aria-hidden="true">
-      <rect width="160" height="160" rx="36" fill="#1C1C20"/>
-      <rect x="24" y="44" width="80" height="14" rx="7" fill="#C8FF3E"/>
-      <rect x="24" y="66" width="58" height="14" rx="7" fill="#C8FF3E" opacity="0.55"/>
-      <rect x="24" y="88" width="36" height="14" rx="7" fill="#C8FF3E" opacity="0.25"/>
-      <path d="M118 56 L142 80 L118 104 Z" fill="#C8FF3E"/>
-    </svg>
-    SetMaster
-  </div>
-  <button class="nav-cta" onclick="scrollToForm()">Entrar na lista</button>
-</nav>
-
-<!-- ════ HERO ════ -->
-<section class="hero" aria-labelledby="hero-heading">
-  <div class="hero-grid" aria-hidden="true"></div>
-  <div class="hero-glow" aria-hidden="true"></div>
-
-  <div class="badge">
-    <span class="badge-dot" aria-hidden="true"></span>
-    Em desenvolvimento · Lista de acesso antecipado aberta
-  </div>
-
-  <h1 class="hero-title" id="hero-heading">
-    O app que o músico<br>freelancer <em>precisava.</em>
-  </h1>
-
-  <p class="hero-sub">
-    Setlist organizado. Repertório no lugar certo. Cachê sob controle. SetMaster está sendo desenvolvido para quem vive de música — e merece viver sem caos.
-  </p>
-
-  <div class="hero-form-wrap" id="hero-form-wrap">
-    <form id="hero-form" onsubmit="submitForm(event,'hero')">
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div class="form-row">
-          <input type="text" class="finput" placeholder="Seu nome" required id="hero-name" autocomplete="given-name">
-          <input type="email" class="finput" placeholder="Seu email" required id="hero-email" autocomplete="email">
-        </div>
-        <input type="tel" class="finput" placeholder="WhatsApp — ex: 21 99999-9999" id="hero-phone" autocomplete="tel">
-        <button type="submit" class="btn-primary">
-          🎸&nbsp;&nbsp;Quero acesso antecipado — de graça
-        </button>
-        <p class="form-note">Plano Free para sempre · Sem spam · Sai quando quiser</p>
-      </div>
-    </form>
-    <div class="success-msg" id="hero-success">
-      <strong>Você está dentro! 🎉</strong>
-      <p>Confirmação no seu email. Em breve você é um dos primeiros a usar.</p>
-    </div>
-  </div>
-
-  <div class="social-proof" aria-label="Prova social">
-    <div class="avatars" aria-hidden="true">
-      <div class="av" style="background:#5C9EFF">R</div>
-      <div class="av" style="background:#C8FF3E">M</div>
-      <div class="av" style="background:#FF5C5C">A</div>
-      <div class="av" style="background:#FFB830">L</div>
-    </div>
-    <p class="sp-text"><strong>247 músicos</strong> já garantiram o acesso antecipado</p>
-  </div>
-</section>
-
-<!-- ════ PROBLEMA ════ -->
-<section class="section" aria-labelledby="problem-heading">
-  <div class="reveal">
-    <p class="section-tag">O problema</p>
-    <h2 class="section-title" id="problem-heading">Você é bom no palco. Fora dele, é outro jogo.</h2>
-    <p class="section-sub">Músico freelancer não tem gestor, não tem assistente, não tem sistema. Tem você — e o WhatsApp.</p>
-  </div>
-
-  <div class="pain-grid reveal">
-    <div class="pain-card">
-      <span class="pain-icon" aria-hidden="true">
-        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#FF5C5C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-          <line x1="22" y1="2" x2="20.5" y2="3.5"/>
-          <line x1="2" y1="2" x2="3.5" y2="3.5"/>
+      /* ─── RESPONSIVE TWEAKS ─── */
+      @media (max-width: 600px) {
+        .section {
+          padding: 72px 18px;
+        }
+        .form-row {
+          flex-direction: column;
+        }
+        .hero-title {
+          letter-spacing: -2px;
+        }
+      }
+      @media (max-width: 400px) {
+        nav {
+          padding: 12px 16px;
+        }
+        .nav-logo {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ════ NAV ════ -->
+    <nav>
+      <div class="nav-logo">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 160 160"
+          fill="none"
+          aria-hidden="true"
+        >
+          <rect width="160" height="160" rx="36" fill="#1C1C20" />
+          <rect x="24" y="44" width="80" height="14" rx="7" fill="#C8FF3E" />
+          <rect
+            x="24"
+            y="66"
+            width="58"
+            height="14"
+            rx="7"
+            fill="#C8FF3E"
+            opacity="0.55"
+          />
+          <rect
+            x="24"
+            y="88"
+            width="36"
+            height="14"
+            rx="7"
+            fill="#C8FF3E"
+            opacity="0.25"
+          />
+          <path d="M118 56 L142 80 L118 104 Z" fill="#C8FF3E" />
         </svg>
-      </span>
-      <div class="pain-title">Setlist de última hora, sempre</div>
-      <p class="pain-text">30 músicas chegam pelo WhatsApp às 23h. O show é amanhã. Você não sabe o que já sabe, o que precisa estudar e o que vai ter que improvisar. Cada show começa no desespero.</p>
-    </div>
-    <div class="pain-card">
-      <span class="pain-icon" aria-hidden="true">
-        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#FFB830" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 18V5l12-2v13"/>
-          <circle cx="6" cy="18" r="3"/>
-          <circle cx="18" cy="16" r="3"/>
-          <line x1="6" y1="10" x2="18" y2="8"/>
-        </svg>
-      </span>
-      <div class="pain-title">Repertório na cabeça — ou em papel</div>
-      <p class="pain-text">Tom de uma música numa foto, cifra de outra num bloco de notas, observação de um contratante num áudio do WhatsApp. Quando o mesmo repertório aparece de novo, você recomeça do zero.</p>
-    </div>
-    <div class="pain-card">
-      <span class="pain-icon" aria-hidden="true">
-        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#5C9EFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="12" y1="1" x2="12" y2="23"/>
-          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-        </svg>
-      </span>
-      <div class="pain-title">Cachê que some sem rastro</div>
-      <p class="pain-text">Você tocou, mas esqueceu de cobrar. Cobrou, mas não sabe se recebeu. No fim do mês você não sabe quanto ganhou, quem ainda deve e se o mês fechou no positivo.</p>
-    </div>
-  </div>
-</section>
+        SetMaster
+      </div>
+      <button class="nav-cta" onclick="scrollToForm()">Entrar na lista</button>
+    </nav>
 
-<hr class="divider">
+    <!-- ════ HERO ════ -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
 
-<!-- ════ FEATURES ════ -->
-<section class="features-bg" aria-labelledby="features-heading">
-  <div class="section" style="padding-bottom:0">
-    <div class="reveal">
-      <p class="section-tag">A solução</p>
-      <h2 class="section-title" id="features-heading">Gestão de show do jeito que o freelancer precisa.</h2>
-      <p class="section-sub">Não é um app genérico de música. É uma ferramenta feita para quem vive de tocar em eventos, lida com vários contratantes e precisa de tudo organizado — rápido.</p>
-    </div>
-
-    <div class="feat-grid reveal">
-
-      <!-- 01 -->
-      <div class="feat-cell">
-        <div class="feat-num">01</div>
-        <span class="feat-icon" aria-hidden="true">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8FF3E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
-          </svg>
-        </span>
-        <div class="feat-title">Import de setlist por foto</div>
-        <p class="feat-text">Fotografou o papel amassado? Encaminhou o PDF do contratante? O app lê tudo automaticamente via IA e monta o setlist em segundos. Sem digitar nome por nome.</p>
-        <span class="feat-tag">OCR inteligente</span>
+      <div class="badge">
+        <span class="badge-dot" aria-hidden="true"></span>
+        Em desenvolvimento · Lista de acesso antecipado aberta
       </div>
 
-      <!-- 02 -->
-      <div class="feat-cell">
-        <div class="feat-num">02</div>
-        <span class="feat-icon" aria-hidden="true">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8FF3E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-          </svg>
-        </span>
-        <div class="feat-title">Countdown inteligente</div>
-        <p class="feat-text">O app sabe quantas horas faltam para o show e quais músicas você ainda não domina. O estudo deixa de ser aleatório — você foca no que importa, no tempo que tem.</p>
-        <span class="feat-tag">Prioridade automática</span>
-      </div>
+      <h1 class="hero-title" id="hero-heading">
+        O app que o músico<br />freelancer <em>precisava.</em>
+      </h1>
 
-      <!-- 03 -->
-      <div class="feat-cell">
-        <div class="feat-num">03</div>
-        <span class="feat-icon" aria-hidden="true">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8FF3E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 18V5l12-2v13"/>
-            <circle cx="6" cy="18" r="3"/>
-            <circle cx="18" cy="16" r="3"/>
-          </svg>
-        </span>
-        <div class="feat-title">Repertório que se acumula</div>
-        <p class="feat-text">Cada música fica salva com tom, BPM, dificuldade e anotações — por contratante. Quando o mesmo repertório aparecer de novo, você não começa do zero. Sua biblioteca cresce a cada show tocado.</p>
-        <span class="feat-tag">Tom por contratante</span>
-      </div>
+      <p class="hero-sub">
+        Setlist organizado. Repertório no lugar certo. Cachê sob controle.
+        SetMaster está sendo desenvolvido para quem vive de música — e merece
+        viver sem caos.
+      </p>
 
-      <!-- 04 -->
-      <div class="feat-cell">
-        <div class="feat-num">04</div>
-        <span class="feat-icon" aria-hidden="true">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8FF3E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="1" x2="12" y2="23"/>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-          </svg>
-        </span>
-        <div class="feat-title">Financeiro sem planilha</div>
-        <p class="feat-text">Lance o cachê, marque como recebido ou pendente, veja o histórico mês a mês. Você sabe exatamente quem deve o quê — sem bloco de notas, sem esquecimento.</p>
-        <span class="feat-tag">A receber em destaque</span>
-      </div>
-
-    </div>
-  </div>
-  <div style="height:96px;"></div>
-</section>
-
-<!-- ════ COMO FUNCIONA ════ -->
-<section class="section" aria-labelledby="how-heading">
-  <div class="reveal">
-    <p class="section-tag">Como funciona</p>
-    <h2 class="section-title" id="how-heading">Do caos do WhatsApp à carreira organizada.</h2>
-  </div>
-
-  <div class="steps-wrap reveal">
-    <div class="step">
-      <div class="step-l">
-        <div class="step-num">1</div>
-        <div class="step-line"></div>
-      </div>
-      <div class="step-body">
-        <div class="step-title">Chegou o setlist — organize agora</div>
-        <p class="step-text">Foto, PDF ou digitado. O SetMaster monta o setlist em segundos e já cruza com seu repertório: o que você domina, o que precisa de atenção e o que é novidade. Sem papel, sem nota de voz.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-l">
-        <div class="step-num">2</div>
-        <div class="step-line"></div>
-      </div>
-      <div class="step-body">
-        <div class="step-title">Prepare o show com foco</div>
-        <p class="step-text">O countdown do show organiza o que estudar pelo tempo disponível. Cada música tem status, tom certo por contratante e anotações. Você chega no show sabendo exatamente o que está dominado e o que precisa de atenção.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-l">
-        <div class="step-num">3</div>
-        <div class="step-line"></div>
-      </div>
-      <div class="step-body">
-        <div class="step-title">Tocou — registre e feche o mês</div>
-        <p class="step-text">Lance o cachê, marque como recebido ou pendente e acompanhe quem ainda deve. No fim do mês você sabe quanto entrou, quanto falta e como sua carreira está crescendo — sem planilha, sem surpresa.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- ════ TESTEMUNHOS ════ -->
-<section class="section" aria-labelledby="testi-heading">
-  <div class="reveal">
-    <p class="section-tag">Beta testers</p>
-    <h2 class="section-title" id="testi-heading">Músicos que testaram antes de você.</h2>
-  </div>
-
-  <div class="testi-grid reveal">
-    <div class="testi">
-      <p class="testi-quote">"Recebi 25 músicas pra um casamento na quinta, show era sábado. Usando o SetMaster eu sabia exatamente quais estudar primeiro. Cheguei no show tranquilo — coisa que nunca acontecia antes."</p>
-      <div class="testi-author">
-        <div class="testi-av" style="background:#5C9EFF">R</div>
-        <div>
-          <div class="testi-name">Rafael M.</div>
-          <div class="testi-role">Violonista freelancer · Rio de Janeiro</div>
+      <div class="hero-form-wrap" id="hero-form-wrap">
+        <form id="hero-form" onsubmit="submitForm(event, 'hero')">
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div class="form-row">
+              <input
+                type="text"
+                class="finput"
+                placeholder="Seu nome"
+                required
+                id="hero-name"
+                autocomplete="given-name"
+              />
+              <input
+                type="email"
+                class="finput"
+                placeholder="Seu email"
+                required
+                id="hero-email"
+                autocomplete="email"
+              />
+            </div>
+            <input
+              type="tel"
+              class="finput"
+              placeholder="WhatsApp — ex: 21 99999-9999"
+              id="hero-phone"
+              autocomplete="tel"
+            />
+            <button type="submit" class="btn-primary">
+              🎸&nbsp;&nbsp;Quero acesso antecipado — de graça
+            </button>
+            <p class="form-note">
+              Plano Free para sempre · Sem spam · Sai quando quiser
+            </p>
+          </div>
+        </form>
+        <div class="success-msg" id="hero-success">
+          <strong>Você está dentro! 🎉</strong>
+          <p>
+            Confirmação no seu email. Em breve você é um dos primeiros a usar.
+          </p>
         </div>
       </div>
-    </div>
-    <div class="testi">
-      <p class="testi-quote">"Eu fazia tudo no caderno. O controle de cachê era uma bagunça total. Agora eu sei exatamente quanto ganhei no mês, quem já pagou e quem está enrolando. Vale só por isso."</p>
-      <div class="testi-author">
-        <div class="testi-av" style="background:#C8FF3E">A</div>
-        <div>
-          <div class="testi-name">Ana Paula S.</div>
-          <div class="testi-role">Cantora · São Paulo</div>
+
+      <div class="social-proof" aria-label="Prova social">
+        <div class="avatars" aria-hidden="true">
+          <div class="av" style="background: #5c9eff">R</div>
+          <div class="av" style="background: #c8ff3e">M</div>
+          <div class="av" style="background: #ff5c5c">A</div>
+          <div class="av" style="background: #ffb830">L</div>
+        </div>
+        <p class="sp-text">
+          <strong>247 músicos</strong> já garantiram o acesso antecipado
+        </p>
+      </div>
+    </section>
+
+    <!-- ════ PROBLEMA ════ -->
+    <section class="section" aria-labelledby="problem-heading">
+      <div class="reveal">
+        <p class="section-tag">O problema</p>
+        <h2 class="section-title" id="problem-heading">
+          Você é bom no palco. Fora dele, é outro jogo.
+        </h2>
+        <p class="section-sub">
+          Músico freelancer não tem gestor, não tem assistente, não tem sistema.
+          Tem você — e o WhatsApp.
+        </p>
+      </div>
+
+      <div class="pain-grid reveal">
+        <div class="pain-card">
+          <span class="pain-icon" aria-hidden="true">
+            <svg
+              width="38"
+              height="38"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#FF5C5C"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+              <line x1="22" y1="2" x2="20.5" y2="3.5" />
+              <line x1="2" y1="2" x2="3.5" y2="3.5" />
+            </svg>
+          </span>
+          <div class="pain-title">Setlist de última hora, sempre</div>
+          <p class="pain-text">
+            30 músicas chegam pelo WhatsApp às 23h. O show é amanhã. Você não
+            sabe o que já sabe, o que precisa estudar e o que vai ter que
+            improvisar. Cada show começa no desespero.
+          </p>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon" aria-hidden="true">
+            <svg
+              width="38"
+              height="38"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#FFB830"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 18V5l12-2v13" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="18" cy="16" r="3" />
+              <line x1="6" y1="10" x2="18" y2="8" />
+            </svg>
+          </span>
+          <div class="pain-title">Repertório na cabeça — ou em papel</div>
+          <p class="pain-text">
+            Tom de uma música numa foto, cifra de outra num bloco de notas,
+            observação de um contratante num áudio do WhatsApp. Quando o mesmo
+            repertório aparece de novo, você recomeça do zero.
+          </p>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon" aria-hidden="true">
+            <svg
+              width="38"
+              height="38"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#5C9EFF"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="12" y1="1" x2="12" y2="23" />
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+          </span>
+          <div class="pain-title">Cachê que some sem rastro</div>
+          <p class="pain-text">
+            Você tocou, mas esqueceu de cobrar. Cobrou, mas não sabe se recebeu.
+            No fim do mês você não sabe quanto ganhou, quem ainda deve e se o
+            mês fechou no positivo.
+          </p>
         </div>
       </div>
-    </div>
-    <div class="testi">
-      <p class="testi-quote">"A gente toca em casamentos, baladas, eventos corporativos. Cada contratante pede um estilo diferente. O repertório organizado por contratante mudou tudo na hora de montar o setlist."</p>
-      <div class="testi-author">
-        <div class="testi-av" style="background:#FFB830">L</div>
-        <div>
-          <div class="testi-name">Lucas & Banda Nordeste</div>
-          <div class="testi-role">Conjunto musical · Fortaleza</div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ════ FEATURES ════ -->
+    <section class="features-bg" aria-labelledby="features-heading">
+      <div class="section" style="padding-bottom: 0">
+        <div class="reveal">
+          <p class="section-tag">A solução</p>
+          <h2 class="section-title" id="features-heading">
+            Gestão de show do jeito que o freelancer precisa.
+          </h2>
+          <p class="section-sub">
+            Não é um app genérico de música. É uma ferramenta feita para quem
+            vive de tocar em eventos, lida com vários contratantes e precisa de
+            tudo organizado — rápido.
+          </p>
+        </div>
+
+        <div class="feat-grid reveal">
+          <!-- 01 -->
+          <div class="feat-cell">
+            <div class="feat-num">01</div>
+            <span class="feat-icon" aria-hidden="true">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#C8FF3E"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+            </span>
+            <div class="feat-title">Import de setlist por foto</div>
+            <p class="feat-text">
+              Fotografou o papel amassado? Encaminhou o PDF do contratante? O
+              app lê tudo automaticamente via IA e monta o setlist em segundos.
+              Sem digitar nome por nome.
+            </p>
+            <span class="feat-tag">OCR inteligente</span>
+          </div>
+
+          <!-- 02 -->
+          <div class="feat-cell">
+            <div class="feat-num">02</div>
+            <span class="feat-icon" aria-hidden="true">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#C8FF3E"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </span>
+            <div class="feat-title">Countdown inteligente</div>
+            <p class="feat-text">
+              O app sabe quantas horas faltam para o show e quais músicas você
+              ainda não domina. O estudo deixa de ser aleatório — você foca no
+              que importa, no tempo que tem.
+            </p>
+            <span class="feat-tag">Prioridade automática</span>
+          </div>
+
+          <!-- 03 -->
+          <div class="feat-cell">
+            <div class="feat-num">03</div>
+            <span class="feat-icon" aria-hidden="true">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#C8FF3E"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 18V5l12-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
+              </svg>
+            </span>
+            <div class="feat-title">Repertório que se acumula</div>
+            <p class="feat-text">
+              Cada música fica salva com tom, BPM, dificuldade e anotações — por
+              contratante. Quando o mesmo repertório aparecer de novo, você não
+              começa do zero. Sua biblioteca cresce a cada show tocado.
+            </p>
+            <span class="feat-tag">Tom por contratante</span>
+          </div>
+
+          <!-- 04 -->
+          <div class="feat-cell">
+            <div class="feat-num">04</div>
+            <span class="feat-icon" aria-hidden="true">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#C8FF3E"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </span>
+            <div class="feat-title">Financeiro sem planilha</div>
+            <p class="feat-text">
+              Lance o cachê, marque como recebido ou pendente, veja o histórico
+              mês a mês. Você sabe exatamente quem deve o quê — sem bloco de
+              notas, sem esquecimento.
+            </p>
+            <span class="feat-tag">A receber em destaque</span>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+      <div style="height: 96px"></div>
+    </section>
 
-<!-- ════ PREÇOS ════ -->
-<section class="section" aria-labelledby="pricing-heading" style="padding-top:0">
-  <div class="reveal">
-    <p class="section-tag">Planos</p>
-    <h2 class="section-title" id="pricing-heading">Grátis para começar. Pro quando você crescer.</h2>
-    <p class="section-sub">Sem surpresa. Sem cartão pra assinar o Free. Cancela quando quiser.</p>
-  </div>
-
-  <div class="pricing-wrap reveal">
-    <!-- FREE -->
-    <div class="plan">
-      <div class="plan-name">Free</div>
-      <div class="plan-price">R$0<span>/mês</span></div>
-      <p class="plan-sub">Para sempre gratuito</p>
-      <ul class="plan-features">
-        <li><span class="chk-ico">✓</span>Até 3 shows/mês</li>
-        <li><span class="chk-ico">✓</span>Setlist manual</li>
-        <li><span class="chk-ico">✓</span>Repertório até 20 músicas</li>
-        <li><span class="chk-ico">✓</span>Financeiro básico</li>
-        <li><span class="chk-ico" style="opacity:.25">—</span><span style="opacity:.35">Import por foto (OCR)</span></li>
-        <li><span class="chk-ico" style="opacity:.25">—</span><span style="opacity:.35">Histórico completo</span></li>
-      </ul>
-      <button class="plan-btn plan-btn-free" onclick="scrollToForm()">Entrar na lista gratuita</button>
-    </div>
-
-    <!-- PRO -->
-    <div class="plan plan-pro">
-      <div class="plan-badge">Recomendado</div>
-      <div class="plan-name" style="color:#C8FF3E">Pro</div>
-      <div class="plan-price" style="color:#C8FF3E">
-        R$19<span style="color:#6A8A20">,90/mês</span>
+    <!-- ════ COMO FUNCIONA ════ -->
+    <section class="section" aria-labelledby="how-heading">
+      <div class="reveal">
+        <p class="section-tag">Como funciona</p>
+        <h2 class="section-title" id="how-heading">
+          Do caos do WhatsApp à carreira organizada.
+        </h2>
       </div>
-      <p class="plan-sub" style="color:#5A7820">ou R$179/ano — 2 meses grátis</p>
-      <ul class="plan-features">
-        <li><span class="chk-ico">✓</span>Shows ilimitados</li>
-        <li><span class="chk-ico">✓</span>Import por foto (OCR inteligente)</li>
-        <li><span class="chk-ico">✓</span>Repertório ilimitado + anotações</li>
-        <li><span class="chk-ico">✓</span>Financeiro completo + histórico</li>
-        <li><span class="chk-ico">✓</span>Alertas de pagamentos em aberto</li>
-        <li><span class="chk-ico">✓</span><strong style="color:var(--accent)">Preço de fundador — travado para sempre</strong></li>
-      </ul>
-      <button class="plan-btn plan-btn-pro" onclick="scrollToForm()">Garantir meu preço de fundador</button>
-    </div>
-  </div>
 
-  <p class="pricing-note reveal">
-    * O SetMaster está em desenvolvimento. Quem entrar na lista agora garante acesso antecipado e trava R$19,90/mês para sempre — mesmo que o preço suba no lançamento público.
-  </p>
-</section>
+      <div class="steps-wrap reveal">
+        <div class="step">
+          <div class="step-l">
+            <div class="step-num">1</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-title">Chegou o setlist — organize agora</div>
+            <p class="step-text">
+              Foto, PDF ou digitado. O SetMaster monta o setlist em segundos e
+              já cruza com seu repertório: o que você domina, o que precisa de
+              atenção e o que é novidade. Sem papel, sem nota de voz.
+            </p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-l">
+            <div class="step-num">2</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-title">Prepare o show com foco</div>
+            <p class="step-text">
+              O countdown do show organiza o que estudar pelo tempo disponível.
+              Cada música tem status, tom certo por contratante e anotações.
+              Você chega no show sabendo exatamente o que está dominado e o que
+              precisa de atenção.
+            </p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-l">
+            <div class="step-num">3</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-title">Tocou — registre e feche o mês</div>
+            <p class="step-text">
+              Lance o cachê, marque como recebido ou pendente e acompanhe quem
+              ainda deve. No fim do mês você sabe quanto entrou, quanto falta e
+              como sua carreira está crescendo — sem planilha, sem surpresa.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<!-- ════ FINAL CTA ════ -->
-<section class="final-section" aria-labelledby="final-heading">
-  <div class="final-glow" aria-hidden="true"></div>
+    <hr class="divider" />
 
-  <h2 class="final-title reveal" id="final-heading">
-    Chega de improvisar<br>a <em>gestão da sua carreira.</em>
-  </h2>
-  <p class="final-sub reveal">
-    O app está sendo construído. Entre na lista agora, garanta acesso antecipado e trave o preço de fundador — antes do lançamento.
-  </p>
+    <!-- ════ TESTEMUNHOS ════ -->
+    <section class="section" aria-labelledby="testi-heading">
+      <div class="reveal">
+        <p class="section-tag">Beta testers</p>
+        <h2 class="section-title" id="testi-heading">
+          Músicos que testaram antes de você.
+        </h2>
+      </div>
 
-  <div class="final-form reveal" id="final-form-wrap">
-    <form id="final-form" onsubmit="submitForm(event,'final')" style="width:100%;display:flex;flex-direction:column;gap:10px;">
-      <input type="text"  class="finput" placeholder="Seu nome"       required id="final-name"  autocomplete="given-name">
-      <input type="email" class="finput" placeholder="Seu email"       required id="final-email" autocomplete="email">
-      <input type="tel"   class="finput" placeholder="WhatsApp (opcional)" id="final-phone" autocomplete="tel">
-      <button type="submit" class="btn-primary">🎸&nbsp;&nbsp;Garantir meu acesso antecipado</button>
-      <p class="form-note">Gratuito para começar · Sem spam · Sai quando quiser</p>
-    </form>
-    <div class="success-msg" id="final-success">
-      <strong>Você está dentro! 🎉</strong>
-      <p>Confirmação no seu email. Você será um dos primeiros a usar o SetMaster.</p>
-    </div>
-  </div>
-</section>
+      <div class="testi-grid reveal">
+        <div class="testi">
+          <p class="testi-quote">
+            "Recebi 25 músicas pra um casamento na quinta, show era sábado.
+            Usando o SetMaster eu sabia exatamente quais estudar primeiro.
+            Cheguei no show tranquilo — coisa que nunca acontecia antes."
+          </p>
+          <div class="testi-author">
+            <div class="testi-av" style="background: #5c9eff">R</div>
+            <div>
+              <div class="testi-name">Rafael M.</div>
+              <div class="testi-role">
+                Violonista freelancer · Rio de Janeiro
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="testi">
+          <p class="testi-quote">
+            "Eu fazia tudo no caderno. O controle de cachê era uma bagunça
+            total. Agora eu sei exatamente quanto ganhei no mês, quem já pagou e
+            quem está enrolando. Vale só por isso."
+          </p>
+          <div class="testi-author">
+            <div class="testi-av" style="background: #c8ff3e">A</div>
+            <div>
+              <div class="testi-name">Ana Paula S.</div>
+              <div class="testi-role">Cantora · São Paulo</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi">
+          <p class="testi-quote">
+            "A gente toca em casamentos, baladas, eventos corporativos. Cada
+            contratante pede um estilo diferente. O repertório organizado por
+            contratante mudou tudo na hora de montar o setlist."
+          </p>
+          <div class="testi-author">
+            <div class="testi-av" style="background: #ffb830">L</div>
+            <div>
+              <div class="testi-name">Lucas & Banda Nordeste</div>
+              <div class="testi-role">Conjunto musical · Fortaleza</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<!-- ════ FOOTER ════ -->
-<footer>
-  <strong>SetMaster</strong> &nbsp;·&nbsp;
-  Em desenvolvimento &nbsp;·&nbsp;
-  <a href="/cdn-cgi/l/email-protection#b6d9dff6c5d3c2dbd7c5c2d3c498d7c6c6"><span class="__cf_email__" data-cfemail="3d52547d4e5849505c4e49584f135c4d4d">[email&#160;protected]</span></a>
-</footer>
+    <!-- ════ PREÇOS ════ -->
+    <section
+      class="section"
+      aria-labelledby="pricing-heading"
+      style="padding-top: 0"
+    >
+      <div class="reveal">
+        <p class="section-tag">Planos</p>
+        <h2 class="section-title" id="pricing-heading">
+          Grátis para começar. Pro quando você crescer.
+        </h2>
+        <p class="section-sub">
+          Sem surpresa. Sem cartão pra assinar o Free. Cancela quando quiser.
+        </p>
+      </div>
 
-<!-- ════ JS ════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Scroll to hero form
-  function scrollToForm() {
-    var el = document.getElementById('hero-form-wrap');
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setTimeout(function() {
-      var inp = document.getElementById('hero-name');
-      if (inp) inp.focus();
-    }, 600);
-  }
+      <div class="pricing-wrap reveal">
+        <!-- FREE -->
+        <div class="plan">
+          <div class="plan-name">Free</div>
+          <div class="plan-price">R$0<span>/mês</span></div>
+          <p class="plan-sub">Para sempre gratuito</p>
+          <ul class="plan-features">
+            <li><span class="chk-ico">✓</span>Até 3 shows/mês</li>
+            <li><span class="chk-ico">✓</span>Setlist manual</li>
+            <li><span class="chk-ico">✓</span>Repertório até 20 músicas</li>
+            <li><span class="chk-ico">✓</span>Financeiro básico</li>
+            <li>
+              <span class="chk-ico" style="opacity: 0.25">—</span
+              ><span style="opacity: 0.35">Import por foto (OCR)</span>
+            </li>
+            <li>
+              <span class="chk-ico" style="opacity: 0.25">—</span
+              ><span style="opacity: 0.35">Histórico completo</span>
+            </li>
+          </ul>
+          <button class="plan-btn plan-btn-free" onclick="scrollToForm()">
+            Entrar na lista gratuita
+          </button>
+        </div>
 
-  // Form submit
-  function submitForm(e, id) {
-    e.preventDefault();
-    var form = document.getElementById(id + '-form');
-    var msg  = document.getElementById(id + '-success');
-    if (form) form.style.display = 'none';
-    if (msg)  msg.classList.add('show');
-  }
+        <!-- PRO -->
+        <div class="plan plan-pro">
+          <div class="plan-badge">Recomendado</div>
+          <div class="plan-name" style="color: #c8ff3e">Pro</div>
+          <div class="plan-price" style="color: #c8ff3e">
+            R$19<span style="color: #6a8a20">,90/mês</span>
+          </div>
+          <p class="plan-sub" style="color: #5a7820">
+            ou R$179/ano — 2 meses grátis
+          </p>
+          <ul class="plan-features">
+            <li><span class="chk-ico">✓</span>Shows ilimitados</li>
+            <li>
+              <span class="chk-ico">✓</span>Import por foto (OCR inteligente)
+            </li>
+            <li>
+              <span class="chk-ico">✓</span>Repertório ilimitado + anotações
+            </li>
+            <li>
+              <span class="chk-ico">✓</span>Financeiro completo + histórico
+            </li>
+            <li>
+              <span class="chk-ico">✓</span>Alertas de pagamentos em aberto
+            </li>
+            <li>
+              <span class="chk-ico">✓</span
+              ><strong style="color: var(--accent)"
+                >Preço de fundador — travado para sempre</strong
+              >
+            </li>
+          </ul>
+          <button class="plan-btn plan-btn-pro" onclick="scrollToForm()">
+            Garantir meu preço de fundador
+          </button>
+        </div>
+      </div>
 
-  // Reveal on scroll
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+      <p class="pricing-note reveal">
+        * O SetMaster está em desenvolvimento. Quem entrar na lista agora
+        garante acesso antecipado e trava R$19,90/mês para sempre — mesmo que o
+        preço suba no lançamento público.
+      </p>
+    </section>
+
+    <!-- ════ FINAL CTA ════ -->
+    <section class="final-section" aria-labelledby="final-heading">
+      <div class="final-glow" aria-hidden="true"></div>
+
+      <h2 class="final-title reveal" id="final-heading">
+        Chega de improvisar<br />a <em>gestão da sua carreira.</em>
+      </h2>
+      <p class="final-sub reveal">
+        O app está sendo construído. Entre na lista agora, garanta acesso
+        antecipado e trave o preço de fundador — antes do lançamento.
+      </p>
+
+      <div class="final-form reveal" id="final-form-wrap">
+        <form
+          id="final-form"
+          onsubmit="submitForm(event, 'final')"
+          style="width: 100%; display: flex; flex-direction: column; gap: 10px"
+        >
+          <input
+            type="text"
+            class="finput"
+            placeholder="Seu nome"
+            required
+            id="final-name"
+            autocomplete="given-name"
+          />
+          <input
+            type="email"
+            class="finput"
+            placeholder="Seu email"
+            required
+            id="final-email"
+            autocomplete="email"
+          />
+          <input
+            type="tel"
+            class="finput"
+            placeholder="WhatsApp (opcional)"
+            id="final-phone"
+            autocomplete="tel"
+          />
+          <button type="submit" class="btn-primary">
+            🎸&nbsp;&nbsp;Garantir meu acesso antecipado
+          </button>
+          <p class="form-note">
+            Gratuito para começar · Sem spam · Sai quando quiser
+          </p>
+        </form>
+        <div class="success-msg" id="final-success">
+          <strong>Você está dentro! 🎉</strong>
+          <p>
+            Confirmação no seu email. Você será um dos primeiros a usar o
+            SetMaster.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ FOOTER ════ -->
+    <footer>
+      <strong>SetMaster</strong> &nbsp;·&nbsp; Em desenvolvimento &nbsp;·&nbsp;
+      <a href="/cdn-cgi/l/email-protection#b6d9dff6c5d3c2dbd7c5c2d3c498d7c6c6"
+        ><span
+          class="__cf_email__"
+          data-cfemail="3d52547d4e5849505c4e49584f135c4d4d"
+          >[email&#160;protected]</span
+        ></a
+      >
+    </footer>
+
+    <!-- ════ JS ════ -->
+    <script
+      data-cfasync="false"
+      src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
+    ></script>
+    <script>
+      // Scroll to hero form
+      function scrollToForm() {
+        var el = document.getElementById("hero-form-wrap");
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(function () {
+          var inp = document.getElementById("hero-name");
+          if (inp) inp.focus();
+        }, 600);
+      }
+
+      // Form submit
+      function submitForm(e, id) {
+        e.preventDefault();
+        var form = document.getElementById(id + "-form");
+        var msg = document.getElementById(id + "-success");
+        if (form) form.style.display = "none";
+        if (msg) msg.classList.add("show");
+      }
+
+      // Reveal on scroll — dispara também para elementos já visíveis no load
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.05 },
+      );
+
+      document.querySelectorAll(".reveal").forEach(function (el) {
+        observer.observe(el);
+      });
+
+      // Fallback: garante que tudo aparece mesmo se o observer falhar
+      setTimeout(function () {
+        document
+          .querySelectorAll(".reveal:not(.visible)")
+          .forEach(function (el) {
+            el.classList.add("visible");
+          });
+      }, 1200);
+    </script>
+  </body>
+</html>
