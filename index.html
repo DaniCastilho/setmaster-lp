@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <title>SetMaster — Você recebeu o setlist. O show é em 48h.</title>
   <meta name="description"
     content="O app para músico freelancer que chega preparado. Organize setlists, estude com foco e controle seus cachês — tudo num só lugar.">
@@ -12,2489 +13,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
     rel="stylesheet">
-  <style>
-    /* ─── TOKENS ─── */
-    :root {
-      --bg: #080809;
-      --bg2: #0F0F11;
-      --bg3: #161618;
-      --bg4: #1E1E22;
-      --line: #222226;
-      --muted: #44445A;
-      --sub: #7A7A90;
-      --text: #C8C8D8;
-      --bright: #FFFFFF;
-      --accent: #C8FF3E;
-      --gold: #FFB830;
-      --green: #3EFF8B;
-      --red: #FF5C5C;
-      --blue: #5C9EFF;
-      --r: 16px;
-      --font-head: 'Syne', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
-    }
-
-    /* ─── RESET ─── */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-      font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font-family: var(--font-body);
-      cursor: pointer;
-      border: none;
-      background: none;
-    }
-
-    /* ─── NOISE OVERLAY ─── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1000;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      opacity: .4;
-    }
-
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 32px;
-      background: rgba(8, 8, 9, .88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, .05);
-    }
-
-    .nav-logo {
-      font-family: var(--font-head);
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: -.5px;
-      color: var(--bright);
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .nav-cta {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--bg);
-      background: var(--accent);
-      border-radius: 10px;
-      padding: 9px 20px;
-      transition: opacity .15s, transform .15s;
-    }
-
-    .nav-cta:hover {
-      opacity: .88;
-      transform: translateY(-1px);
-    }
-
-    @media(max-width:480px) {
-      nav {
-        padding: 14px 18px;
-      }
-
-      .nav-cta {
-        font-size: 12px;
-        padding: 8px 14px;
-      }
-    }
-
-    /* ─── HERO ─── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 140px 20px 90px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(200, 255, 62, .035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200, 255, 62, .035) 1px, transparent 1px);
-      background-size: 56px 56px;
-      mask-image: radial-gradient(ellipse 75% 55% at 50% 50%, black 0%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 50%, black 0%, transparent 100%);
-    }
-
-    .hero-glow {
-      position: absolute;
-      width: 720px;
-      height: 420px;
-      background: radial-gradient(ellipse, rgba(200, 255, 62, .07) 0%, transparent 68%);
-      top: 45%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(200, 255, 62, .08);
-      border: 1px solid rgba(200, 255, 62, .2);
-      border-radius: 100px;
-      padding: 6px 15px;
-      margin-bottom: 32px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: .3px;
-      position: relative;
-      animation: fadeUp .55s ease both;
-    }
-
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2.2s ease infinite;
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1)
-      }
-
-      50% {
-        opacity: .35;
-        transform: scale(.65)
-      }
-    }
-
-    .hero-title {
-      font-family: var(--font-head);
-      font-size: clamp(32px, 5.5vw, 62px);
-      font-weight: 800;
-      color: var(--bright);
-      letter-spacing: -2px;
-      line-height: 1.05;
-      max-width: 720px;
-      position: relative;
-      margin: 0 auto;
-      animation: fadeUp .55s .08s ease both;
-    }
-
-    .hero-title em {
-      font-style: normal;
-      color: var(--accent);
-    }
-
-    .hero-sub {
-      font-size: clamp(15px, 1.8vw, 18px);
-      font-weight: 300;
-      color: var(--sub);
-      max-width: 460px;
-      line-height: 1.65;
-      margin: 24px auto 0;
-      position: relative;
-      animation: fadeUp .55s .16s ease both;
-    }
-
-    /* ─── FORM ─── */
-    .hero-form-wrap {
-      width: 100%;
-      max-width: 460px;
-      margin: 44px auto 0;
-      position: relative;
-      animation: fadeUp .55s .24s ease both;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .form-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .finput {
-      width: 100%;
-      font-family: var(--font-body);
-      font-size: 15px;
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 14px 16px;
-      color: var(--bright);
-      outline: none;
-      transition: border-color .2s;
-    }
-
-    .finput::placeholder {
-      color: var(--muted);
-    }
-
-    .finput:focus {
-      border-color: rgba(200, 255, 62, .45);
-    }
-
-    .btn-primary {
-      width: 100%;
-      font-family: var(--font-head);
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--bg);
-      background: var(--accent);
-      border-radius: 12px;
-      padding: 17px 32px;
-      letter-spacing: -.3px;
-      box-shadow: 0 8px 36px rgba(200, 255, 62, .22);
-      transition: transform .15s, box-shadow .15s;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 48px rgba(200, 255, 62, .35);
-    }
-
-    .form-note {
-      font-size: 12px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .success-msg {
-      display: none;
-      background: rgba(200, 255, 62, .07);
-      border: 1px solid rgba(200, 255, 62, .2);
-      border-radius: 12px;
-      padding: 22px 24px;
-      text-align: center;
-    }
-
-    .success-msg.show {
-      display: block;
-    }
-
-    .success-msg strong {
-      font-family: var(--font-head);
-      font-size: 16px;
-      color: var(--accent);
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .success-msg p {
-      font-size: 13px;
-      color: var(--sub);
-    }
-
-    /* social proof */
-    .social-proof {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      margin-top: 38px;
-      animation: fadeUp .55s .32s ease both;
-      position: relative;
-    }
-
-    .avatars {
-      display: flex;
-    }
-
-    .av {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 2px solid var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--bg);
-      margin-left: -8px;
-    }
-
-    .av:first-child {
-      margin-left: 0;
-    }
-
-    .sp-text {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .sp-text strong {
-      color: var(--sub);
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(22px)
-      }
-
-      to {
-        opacity: 1;
-        transform: none
-      }
-    }
-
-    /* ─── SECTIONS BASE ─── */
-    .section {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 96px 24px;
-    }
-
-    .section-tag {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 14px;
-      text-align: center;
-    }
-
-    .section-title {
-      font-family: var(--font-head);
-      font-size: clamp(24px, 3.5vw, 40px);
-      font-weight: 800;
-      color: var(--bright);
-      letter-spacing: -1px;
-      line-height: 1.1;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .section-sub {
-      font-size: 16px;
-      font-weight: 300;
-      color: var(--sub);
-      line-height: 1.7;
-      max-width: 560px;
-      margin: 14px auto 0;
-      text-align: center;
-    }
-
-    .divider {
-      border: none;
-      border-top: 1px solid var(--line);
-    }
-
-    /* mobile section centering */
-    @media(max-width:640px) {
-      .section-title {
-        font-size: clamp(22px, 6vw, 32px);
-      }
-
-      .section-sub {
-        font-size: 15px;
-      }
-    }
-
-    /* ─── PAIN ─── */
-    .pain-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 52px;
-    }
-
-    @media(max-width:780px) {
-      .pain-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .pain-card {
-      background: var(--bg2);
-      border: 1px solid var(--line);
-      border-radius: var(--r);
-      padding: 32px 26px;
-      transition: border-color .25s;
-    }
-
-    @media(max-width:600px) {
-      .pain-card {
-        padding: 22px 18px;
-      }
-    }
-
-    .pain-card:hover {
-      border-color: rgba(255, 255, 255, .1);
-    }
-
-    .pain-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .pain-title {
-      font-family: var(--font-head);
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--bright);
-      margin-bottom: 10px;
-    }
-
-    .pain-text {
-      font-size: 14px;
-      color: var(--sub);
-      line-height: 1.7;
-    }
-
-    /* ─── FEATURES ─── */
-    .features-bg {
-      background: var(--bg2);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .feat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2px;
-      margin-top: 52px;
-      border: 1px solid var(--line);
-      border-radius: var(--r);
-      overflow: hidden;
-    }
-
-    @media(max-width:640px) {
-      .feat-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .feat-cell {
-      background: var(--bg3);
-      padding: 36px 30px;
-      position: relative;
-      overflow: hidden;
-      transition: background .2s;
-    }
-
-    @media(max-width:640px) {
-      .feat-cell {
-        padding: 24px 20px;
-      }
-
-      .feat-title {
-        font-size: 17px;
-      }
-
-      .feat-num {
-        margin-bottom: 14px;
-      }
-    }
-
-    .feat-cell:hover {
-      background: var(--bg4);
-    }
-
-    .feat-cell::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 3px;
-      height: 0;
-      background: var(--accent);
-      transition: height .35s ease;
-      border-radius: 0 3px 3px 0;
-    }
-
-    .feat-cell:hover::before {
-      height: 100%;
-    }
-
-    .feat-num {
-      font-family: var(--font-head);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--muted);
-      margin-bottom: 22px;
-    }
-
-    .feat-icon {
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .feat-title {
-      font-family: var(--font-head);
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--bright);
-      letter-spacing: -.3px;
-      margin-bottom: 9px;
-    }
-
-    .feat-text {
-      font-size: 14px;
-      color: var(--sub);
-      line-height: 1.7;
-    }
-
-    .feat-tag {
-      display: inline-block;
-      margin-top: 14px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--accent);
-      background: rgba(200, 255, 62, .08);
-      border-radius: 7px;
-      padding: 3px 10px;
-    }
-
-    /* ─── STEPS ─── */
-    .steps-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin: 56px auto 0;
-      max-width: 560px;
-    }
-
-    .step {
-      display: flex;
-      gap: 26px;
-      padding-bottom: 44px;
-    }
-
-    .step:last-child {
-      padding-bottom: 0;
-    }
-
-    .step-l {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .step-num {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--bg3);
-      border: 1px solid var(--line);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-head);
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .step-line {
-      width: 1px;
-      flex: 1;
-      background: var(--line);
-      margin-top: 8px;
-    }
-
-    .step:last-child .step-line {
-      display: none;
-    }
-
-    .step-body {
-      padding-top: 7px;
-    }
-
-    .step-title {
-      font-family: var(--font-head);
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--bright);
-      margin-bottom: 7px;
-    }
-
-    .step-text {
-      font-size: 14px;
-      color: var(--sub);
-      line-height: 1.7;
-    }
-
-    /* ─── PRICING ─── */
-    .pricing-wrap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin: 56px auto 0;
-      max-width: 700px;
-    }
-
-    @media(max-width:620px) {
-      .pricing-wrap {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .plan {
-      background: var(--bg2);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 34px 28px;
-    }
-
-    .plan-pro {
-      background: linear-gradient(150deg, #141A00 0%, #0C1200 100%);
-      border-color: rgba(200, 255, 62, .3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .plan-pro::before {
-      content: '';
-      position: absolute;
-      top: -70px;
-      right: -70px;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(200, 255, 62, .09) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .plan-badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--accent);
-      border-radius: 6px;
-      padding: 3px 10px;
-      margin-bottom: 22px;
-    }
-
-    .plan-name {
-      font-family: var(--font-head);
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--bright);
-    }
-
-    .plan-price {
-      font-family: var(--font-head);
-      font-size: 42px;
-      font-weight: 800;
-      color: var(--bright);
-      letter-spacing: -2px;
-      margin: 16px 0 4px;
-      display: flex;
-      align-items: baseline;
-      gap: 3px;
-    }
-
-    .plan-price span {
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--sub);
-      letter-spacing: 0;
-    }
-
-    .plan-sub {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-
-    .plan-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
-    }
-
-    .plan-features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 14px;
-      color: var(--sub);
-      line-height: 1.45;
-    }
-
-    .chk-ico {
-      flex-shrink: 0;
-      width: 17px;
-      height: 17px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9px;
-      margin-top: 1px;
-    }
-
-    .plan .chk-ico {
-      background: rgba(255, 255, 255, .07);
-      color: var(--muted);
-    }
-
-    .plan-pro .chk-ico {
-      background: rgba(200, 255, 62, .15);
-      color: var(--accent);
-    }
-
-    .plan-btn {
-      width: 100%;
-      margin-top: 30px;
-      font-family: var(--font-head);
-      font-size: 15px;
-      font-weight: 700;
-      border-radius: 12px;
-      padding: 14px;
-      letter-spacing: -.2px;
-      transition: all .15s;
-    }
-
-    .plan-btn-free {
-      background: transparent;
-      border: 1px solid var(--line);
-      color: var(--sub);
-    }
-
-    .plan-btn-free:hover {
-      border-color: var(--muted);
-      color: var(--text);
-    }
-
-    .plan-btn-pro {
-      background: var(--accent);
-      color: var(--bg);
-      box-shadow: 0 6px 28px rgba(200, 255, 62, .18);
-    }
-
-    .plan-btn-pro:hover {
-      box-shadow: 0 10px 40px rgba(200, 255, 62, .34);
-      transform: translateY(-1px);
-    }
-
-    .pricing-note {
-      font-size: 13px;
-      color: var(--muted);
-      margin: 20px auto 0;
-      max-width: 500px;
-      text-align: center;
-    }
-
-    /* ─── TESTIMONIALS ─── */
-    .testi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 52px;
-    }
-
-    @media(max-width:780px) {
-      .testi-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .testi {
-      background: var(--bg2);
-      border: 1px solid var(--line);
-      border-radius: var(--r);
-      padding: 26px 24px;
-    }
-
-    .testi-quote {
-      font-size: 14px;
-      font-style: italic;
-      font-weight: 300;
-      color: var(--text);
-      line-height: 1.75;
-      margin-bottom: 22px;
-    }
-
-    .testi-author {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .testi-av {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 700;
-      color: #0D0D0F;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .testi-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--bright);
-    }
-
-    .testi-role {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 3px;
-      line-height: 1.4;
-    }
-
-    /* ─── FINAL CTA ─── */
-    .final-section {
-      text-align: center;
-      padding: 110px 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .final-glow {
-      position: absolute;
-      width: 900px;
-      height: 450px;
-      background: radial-gradient(ellipse, rgba(200, 255, 62, .055) 0%, transparent 65%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    .final-title {
-      font-family: var(--font-head);
-      font-size: clamp(28px, 4vw, 50px);
-      font-weight: 800;
-      color: var(--bright);
-      letter-spacing: -1.5px;
-      line-height: 1.06;
-      max-width: 620px;
-      margin: 0 auto 16px;
-      position: relative;
-    }
-
-    .final-title em {
-      font-style: normal;
-      color: var(--accent);
-    }
-
-    .final-sub {
-      font-size: 18px;
-      font-weight: 300;
-      color: var(--sub);
-      max-width: 420px;
-      margin: 0 auto 52px;
-      position: relative;
-    }
-
-    .final-form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      max-width: 420px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    /* ─── FOOTER ─── */
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 32px 24px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    footer strong {
-      font-family: var(--font-head);
-      color: var(--sub);
-    }
-
-    footer a {
-      color: var(--muted);
-      transition: color .15s;
-    }
-
-    footer a:hover {
-      color: var(--sub);
-    }
-
-    /* ─── REVEAL ─── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(26px);
-      transition: opacity .65s ease, transform .65s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    .reveal-head {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    /* ─── MOCKUPS ─── */
-    .mockups-section {
-      padding: 48px 0 80px;
-      overflow: hidden;
-      border-top: 1px solid var(--line);
-    }
-
-    .mockups-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-align: center;
-      padding: 0 24px 40px;
-    }
-
-    .mockups-track-wrap {
-      padding: 20px 40px 32px;
-    }
-
-    .mockups-track {
-      display: flex;
-      gap: 28px;
-      align-items: flex-start;
-      justify-content: center;
-    }
-
-    .mock-phone {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      flex-shrink: 0;
-    }
-
-    .mock-frame {
-      width: 260px;
-      height: 562px;
-      background: #141416;
-      border-radius: 36px;
-      border: 1.5px solid #2A2A30;
-      overflow: hidden;
-      position: relative;
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.04),
-        0 32px 80px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .mock-notch {
-      position: absolute;
-      top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 22px;
-      background: #0D0D0F;
-      border-radius: 14px;
-      z-index: 20;
-    }
-
-    @media(max-width:900px) {
-      .mockups-track-wrap {
-        overflow-x: auto;
-        overflow-y: visible;
-        padding: 20px 24px 32px;
-        scrollbar-width: thin;
-        scrollbar-color: var(--line) transparent;
-        cursor: grab;
-      }
-
-      .mockups-track-wrap:active {
-        cursor: grabbing;
-      }
-
-      .mockups-track-wrap::-webkit-scrollbar {
-        height: 4px;
-      }
-
-      .mockups-track-wrap::-webkit-scrollbar-thumb {
-        background: var(--line);
-        border-radius: 2px;
-      }
-
-      .mockups-track {
-        width: max-content;
-        justify-content: flex-start;
-      }
-
-      .mock-frame {
-        width: 220px;
-        height: 476px;
-      }
-    }
-
-    .mock-screen {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      background: #141416;
-    }
-
-    .mock-caption {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--muted);
-      letter-spacing: .3px;
-    }
-
-    /* mock internals */
-    .ms-status {
-      padding: 36px 18px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 10px;
-      font-weight: 600;
-      color: #E8E8F0;
-      flex-shrink: 0;
-    }
-
-    .ms-icons {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-    }
-
-    .ms-body {
-      flex: 1;
-      padding: 10px 14px 68px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .ms-heading {
-      font-family: 'Syne', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.3px;
-    }
-
-    .ms-sub {
-      font-size: 11px;
-      color: #7B7B8A;
-      margin-top: 2px;
-    }
-
-    .ms-card {
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 10px;
-      padding: 12px;
-    }
-
-    .ms-card-accent {
-      background: linear-gradient(135deg, #1A2800 0%, #0F1E00 100%);
-      border-color: rgba(200, 255, 62, 0.2);
-    }
-
-    .ms-countdown-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #C8FF3E;
-      margin-bottom: 6px;
-    }
-
-    .ms-countdown-time {
-      font-family: 'Syne', sans-serif;
-      font-size: 24px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-
-    .ms-countdown-time span {
-      font-size: 12px;
-      font-weight: 400;
-      color: #7B7B8A;
-    }
-
-    .ms-countdown-show {
-      font-size: 11px;
-      color: #7B7B8A;
-      margin-top: 4px;
-    }
-
-    .ms-show-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 10px;
-      padding: 9px 11px;
-    }
-
-    .ms-show-date {
-      text-align: center;
-      min-width: 28px;
-    }
-
-    .ms-show-day {
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1;
-    }
-
-    .ms-show-month {
-      font-size: 8px;
-      color: #52525E;
-      text-transform: uppercase;
-    }
-
-    .ms-show-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .ms-show-meta {
-      font-size: 10px;
-      color: #7B7B8A;
-      margin-top: 1px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .ms-badge {
-      font-size: 9px;
-      font-weight: 600;
-      border-radius: 5px;
-      padding: 2px 6px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .ms-badge-red {
-      background: rgba(255, 92, 92, 0.1);
-      color: #FF5C5C;
-    }
-
-    .ms-badge-gold {
-      background: rgba(255, 184, 48, 0.1);
-      color: #FFB830;
-    }
-
-    .ms-badge-green {
-      background: rgba(62, 255, 139, 0.1);
-      color: #3EFF8B;
-    }
-
-    .ms-nav {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 56px;
-      background: #141416;
-      border-top: 1px solid #2A2A30;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 4px 8px;
-      z-index: 10;
-    }
-
-    .ms-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      padding: 4px 10px;
-      color: #52525E;
-    }
-
-    .ms-nav-item svg {
-      width: 17px;
-      height: 17px;
-    }
-
-    .ms-nav-item span {
-      font-size: 8px;
-      font-weight: 500;
-    }
-
-    .ms-nav-active {
-      color: #C8FF3E;
-    }
-
-    .ms-music-card {
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .ms-music-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 2px;
-      border-radius: 0 2px 2px 0;
-    }
-
-    .ms-dominado::before {
-      height: 60%;
-      background: #3EFF8B;
-    }
-
-    .ms-atencao::before {
-      height: 60%;
-      background: #FFB830;
-    }
-
-    .ms-nasei::before {
-      height: 60%;
-      background: #FF5C5C;
-    }
-
-    .ms-music-inner {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 11px;
-    }
-
-    .ms-music-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      color: #52525E;
-      min-width: 12px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-
-    .ms-music-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .ms-music-artist {
-      font-size: 10px;
-      color: #7B7B8A;
-      margin-top: 1px;
-    }
-
-    .ms-music-tags {
-      display: flex;
-      gap: 4px;
-      margin-top: 5px;
-      flex-wrap: wrap;
-    }
-
-    .ms-tag {
-      font-size: 9px;
-      font-weight: 600;
-      border-radius: 4px;
-      padding: 1px 5px;
-      white-space: nowrap;
-    }
-
-    .ms-tag-key {
-      background: rgba(92, 158, 255, 0.12);
-      color: #5C9EFF;
-    }
-
-    .ms-tag-easy {
-      background: rgba(62, 255, 139, 0.1);
-      color: #3EFF8B;
-    }
-
-    .ms-tag-medium {
-      background: rgba(255, 184, 48, 0.1);
-      color: #FFB830;
-    }
-
-    .ms-tag-hard {
-      background: rgba(255, 92, 92, 0.1);
-      color: #FF5C5C;
-    }
-
-    .ms-tag-note {
-      background: rgba(200, 255, 62, 0.08);
-      color: #C8FF3E;
-    }
-
-    @media(max-width:600px) {
-      .mockups-track {
-        padding: 0 24px;
-      }
-
-      .mock-frame {
-        width: 220px;
-        height: 476px;
-      }
-    }
-
-
-    /* ─── OCR SPOTLIGHT ─── */
-    .ocr-section {
-      padding: 96px 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ocr-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(200, 255, 62, 0.05) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .ocr-inner {
-      max-width: 1080px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-
-    @media(max-width:780px) {
-      .ocr-inner {
-        grid-template-columns: 1fr;
-        gap: 48px;
-      }
-
-      .ocr-section {
-        padding: 64px 18px;
-      }
-
-      .ocr-phone-wrap {
-        display: flex;
-        justify-content: center;
-      }
-    }
-
-    /* left copy */
-    .ocr-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #0D0D0F;
-      background: var(--accent);
-      border-radius: 100px;
-      padding: 5px 14px;
-      margin-bottom: 24px;
-    }
-
-    .ocr-title {
-      font-family: var(--font-head);
-      font-size: clamp(28px, 3.5vw, 42px);
-      font-weight: 800;
-      color: var(--bright);
-      letter-spacing: -1px;
-      line-height: 1.1;
-      margin-bottom: 18px;
-    }
-
-    .ocr-title em {
-      font-style: normal;
-      color: var(--accent);
-    }
-
-    .ocr-sub {
-      font-size: 16px;
-      font-weight: 300;
-      color: var(--sub);
-      line-height: 1.75;
-      max-width: 420px;
-      margin-bottom: 28px;
-    }
-
-    .ocr-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 32px;
-    }
-
-    .ocr-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-    }
-
-    .ocr-step-num {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: rgba(200, 255, 62, 0.12);
-      border: 1px solid rgba(200, 255, 62, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-head);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .ocr-step-text {
-      font-size: 14px;
-      color: var(--sub);
-      line-height: 1.6;
-    }
-
-    .ocr-step-text strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    .ocr-pro-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent);
-      background: rgba(200, 255, 62, 0.08);
-      border: 1px solid rgba(200, 255, 62, 0.2);
-      border-radius: 8px;
-      padding: 7px 14px;
-    }
-
-    /* right: phone mockup */
-    .ocr-phone-wrap {
-      position: relative;
-    }
-
-    .ocr-phone {
-      width: 280px;
-      height: 520px;
-      background: #141416;
-      border-radius: 40px;
-      border: 1.5px solid #2A2A30;
-      overflow: hidden;
-      position: relative;
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.04),
-        0 40px 100px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .ocr-phone::before {
-      content: '';
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 88px;
-      height: 26px;
-      background: #0D0D0F;
-      border-radius: 16px;
-      z-index: 20;
-    }
-
-    .ocr-screen {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      padding: 48px 14px 16px;
-      background: #141416;
-    }
-
-    /* scan area — the "photo" */
-    .ocr-scan-area {
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 12px;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .ocr-scan-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #52525E;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .ocr-scan-label::before {
-      content: '📸';
-      font-size: 11px;
-    }
-
-    .ocr-paper-lines {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .ocr-paper-line {
-      height: 8px;
-      border-radius: 3px;
-      background: #2A2A30;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ocr-paper-line::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(200, 255, 62, 0.3) 50%, transparent 100%);
-      transform: translateX(-100%);
-      animation: scan-line 2.5s ease infinite;
-    }
-
-    .ocr-paper-line:nth-child(1) {
-      width: 90%;
-    }
-
-    .ocr-paper-line:nth-child(2) {
-      width: 75%;
-    }
-
-    .ocr-paper-line:nth-child(3) {
-      width: 85%;
-    }
-
-    .ocr-paper-line:nth-child(4) {
-      width: 70%;
-    }
-
-    .ocr-paper-line:nth-child(5) {
-      width: 80%;
-    }
-
-    .ocr-paper-line:nth-child(1)::after {
-      animation-delay: 0s;
-    }
-
-    .ocr-paper-line:nth-child(2)::after {
-      animation-delay: 0.15s;
-    }
-
-    .ocr-paper-line:nth-child(3)::after {
-      animation-delay: 0.3s;
-    }
-
-    .ocr-paper-line:nth-child(4)::after {
-      animation-delay: 0.45s;
-    }
-
-    .ocr-paper-line:nth-child(5)::after {
-      animation-delay: 0.6s;
-    }
-
-    @keyframes scan-line {
-      0% {
-        transform: translateX(-100%);
-      }
-
-      60%,
-      100% {
-        transform: translateX(200%);
-      }
-    }
-
-    /* scanning status */
-    .ocr-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 10px;
-      color: var(--accent);
-      font-weight: 600;
-      margin-top: 10px;
-    }
-
-    .ocr-status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 1.4s ease infinite;
-    }
-
-    /* result list — músicas aparecendo */
-    .ocr-result-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #52525E;
-      margin-bottom: 8px;
-    }
-
-    .ocr-results {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .ocr-result-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 8px;
-      padding: 8px 10px;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
-    }
-
-    .ocr-result-item.visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    .ocr-result-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      color: #52525E;
-      min-width: 14px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-
-    .ocr-result-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .ocr-result-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .ocr-result-artist {
-      font-size: 9px;
-      color: #7B7B8A;
-      margin-top: 1px;
-    }
-
-    .ocr-result-check {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: rgba(200, 255, 62, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 8px;
-      color: var(--accent);
-      flex-shrink: 0;
-    }
-
-    .ocr-result-pending {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 1.5px solid #2A2A30;
-      flex-shrink: 0;
-    }
-
-    /* glow badge on phone */
-    .ocr-phone-badge {
-      position: absolute;
-      bottom: -10px;
-      right: -10px;
-      background: var(--accent);
-      color: #0D0D0F;
-      font-family: var(--font-head);
-      font-size: 11px;
-      font-weight: 700;
-      border-radius: 12px;
-      padding: 8px 14px;
-      box-shadow: 0 8px 24px rgba(200, 255, 62, 0.35);
-      white-space: nowrap;
-    }
-
-
-    /* ─── FEATURE SPOTLIGHTS ─── */
-    .feat-spot {
-      padding: 96px 24px;
-      position: relative;
-      border-top: 1px solid var(--line);
-    }
-
-    .feat-spot-inner {
-      max-width: 1080px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 48px;
-      align-items: center;
-    }
-
-    .feat-spot-copy {
-      min-width: 0;
-    }
-
-    .feat-spot-inner.reverse .feat-spot-copy {
-      order: 2;
-    }
-
-    .feat-spot-inner.reverse .feat-spot-phone-wrap {
-      order: 1;
-    }
-
-    @media(max-width:600px) {
-      .feat-spot {
-        padding: 64px 18px;
-      }
-
-      .feat-spot-inner {
-        grid-template-columns: 1fr;
-        gap: 48px;
-      }
-
-      .feat-spot-inner.reverse .feat-spot-phone-wrap {
-        order: unset;
-      }
-
-      .feat-spot-inner.reverse .feat-spot-copy {
-        order: unset;
-      }
-
-      .feat-spot-phone-wrap {
-        display: flex;
-        justify-content: center;
-      }
-    }
-
-    /* copy side */
-    .feat-spot-tag {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 18px;
-      display: block;
-    }
-
-    .feat-spot-title {
-      font-family: var(--font-head);
-      font-size: clamp(26px, 3.2vw, 40px);
-      font-weight: 800;
-      color: var(--bright);
-      letter-spacing: -1px;
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-
-    .feat-spot-title em {
-      font-style: normal;
-      color: var(--accent);
-    }
-
-    .feat-spot-sub {
-      font-size: 15px;
-      font-weight: 300;
-      color: var(--sub);
-      line-height: 1.75;
-      margin-bottom: 28px;
-      max-width: 400px;
-    }
-
-    .feat-spot-bullets {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .feat-spot-bullet {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 14px;
-      color: var(--sub);
-      line-height: 1.6;
-    }
-
-    .feat-spot-bullet-icon {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      background: rgba(200, 255, 62, 0.1);
-      border: 1px solid rgba(200, 255, 62, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-      font-size: 11px;
-    }
-
-    .feat-spot-bullet strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    /* phone side */
-    .feat-spot-phone-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .feat-spot-phone {
-      width: 280px;
-      max-width: 100%;
-      height: 540px;
-      background: #141416;
-      border-radius: 40px;
-      border: 1.5px solid #2A2A30;
-      overflow: hidden;
-      position: relative;
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.04),
-        0 40px 100px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      margin: 0 auto;
-    }
-
-    .feat-spot-phone::before {
-      content: '';
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 88px;
-      height: 26px;
-      background: #0D0D0F;
-      border-radius: 16px;
-      z-index: 20;
-    }
-
-    .fsp-screen {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      background: #141416;
-    }
-
-    .fsp-status {
-      padding: 40px 16px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 9px;
-      font-weight: 600;
-      color: #E8E8F0;
-      flex-shrink: 0;
-    }
-
-    .fsp-body {
-      flex: 1;
-      padding: 10px 13px 60px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      overflow: hidden;
-    }
-
-    .fsp-nav {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 52px;
-      background: #141416;
-      border-top: 1px solid #2A2A30;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 4px 6px;
-      z-index: 10;
-    }
-
-    .fsp-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      padding: 4px 8px;
-      color: #52525E;
-    }
-
-    .fsp-nav-item svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    .fsp-nav-item span {
-      font-size: 8px;
-      font-weight: 500;
-    }
-
-    .fsp-nav-active {
-      color: #C8FF3E;
-    }
-
-    /* shared mini components */
-    .fsp-heading {
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.3px;
-    }
-
-    .fsp-sub {
-      font-size: 10px;
-      color: #7B7B8A;
-    }
-
-    .fsp-card {
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 10px;
-      padding: 11px;
-    }
-
-    .fsp-label {
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #52525E;
-      margin-bottom: 6px;
-    }
-
-    .fsp-badge-red {
-      font-size: 8px;
-      font-weight: 600;
-      border-radius: 5px;
-      padding: 2px 6px;
-      background: rgba(255, 92, 92, 0.1);
-      color: #FF5C5C;
-      white-space: nowrap;
-    }
-
-    .fsp-badge-gold {
-      font-size: 8px;
-      font-weight: 600;
-      border-radius: 5px;
-      padding: 2px 6px;
-      background: rgba(255, 184, 48, 0.1);
-      color: #FFB830;
-      white-space: nowrap;
-    }
-
-    .fsp-badge-green {
-      font-size: 8px;
-      font-weight: 600;
-      border-radius: 5px;
-      padding: 2px 6px;
-      background: rgba(62, 255, 139, 0.1);
-      color: #3EFF8B;
-      white-space: nowrap;
-    }
-
-    /* ── DASHBOARD animations ── */
-    .fsp-prog-track {
-      height: 4px;
-      background: #242428;
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 6px;
-    }
-
-    .fsp-prog-fill {
-      height: 100%;
-      border-radius: 2px;
-      background: #C8FF3E;
-      width: 0;
-      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .fsp-prog-fill.animated {
-      width: 68%;
-    }
-
-    .fsp-fin-val {
-      font-family: 'Syne', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .fsp-show-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 8px;
-      padding: 8px 10px;
-    }
-
-    .fsp-show-date {
-      text-align: center;
-      min-width: 24px;
-    }
-
-    .fsp-show-day {
-      font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1;
-    }
-
-    .fsp-show-month {
-      font-size: 7px;
-      color: #52525E;
-      text-transform: uppercase;
-    }
-
-    .fsp-show-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .fsp-show-meta {
-      font-size: 9px;
-      color: #7B7B8A;
-      margin-top: 1px;
-    }
-
-    /* ── MÚSICAS animations ── */
-    .fsp-music-card {
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      opacity: 0;
-      transform: translateX(-12px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-
-    .fsp-music-card.animated {
-      opacity: 1;
-      transform: none;
-    }
-
-    .fsp-music-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 2px;
-      border-radius: 0 2px 2px 0;
-    }
-
-    .fsp-mc-green::before {
-      height: 60%;
-      background: #3EFF8B;
-    }
-
-    .fsp-mc-gold::before {
-      height: 60%;
-      background: #FFB830;
-    }
-
-    .fsp-mc-red::before {
-      height: 60%;
-      background: #FF5C5C;
-    }
-
-    .fsp-music-inner {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 8px 10px;
-    }
-
-    .fsp-music-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      color: #52525E;
-      min-width: 10px;
-      flex-shrink: 0;
-    }
-
-    .fsp-music-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .fsp-music-artist {
-      font-size: 9px;
-      color: #7B7B8A;
-    }
-
-    .fsp-tag {
-      font-size: 8px;
-      font-weight: 600;
-      border-radius: 4px;
-      padding: 1px 5px;
-    }
-
-    .fsp-tag-green {
-      background: rgba(62, 255, 139, 0.1);
-      color: #3EFF8B;
-    }
-
-    .fsp-tag-gold {
-      background: rgba(255, 184, 48, 0.1);
-      color: #FFB830;
-    }
-
-    .fsp-tag-red {
-      background: rgba(255, 92, 92, 0.1);
-      color: #FF5C5C;
-    }
-
-    .fsp-tag-blue {
-      background: rgba(92, 158, 255, 0.12);
-      color: #5C9EFF;
-    }
-
-    .fsp-tag-lime {
-      background: rgba(200, 255, 62, 0.08);
-      color: #C8FF3E;
-    }
-
-    /* ── ANOTAÇÕES animations ── */
-    .fsp-sheet {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #141416;
-      border-radius: 18px 18px 0 0;
-      border-top: 1px solid #2A2A30;
-      z-index: 10;
-      transform: translateY(20%);
-      transition: transform 0.55s cubic-bezier(0.32, 0.72, 0, 1);
-    }
-
-    .fsp-sheet.animated {
-      transform: translateY(0);
-    }
-
-    .fsp-sheet-handle {
-      width: 28px;
-      height: 3px;
-      border-radius: 2px;
-      background: #2A2A30;
-      margin: 8px auto 0;
-    }
-
-    .fsp-sheet-body {
-      padding: 10px 14px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .fsp-sheet-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .fsp-sheet-artist {
-      font-size: 10px;
-      color: #7B7B8A;
-      margin-top: 1px;
-    }
-
-    .fsp-meta-row {
-      display: flex;
-      gap: 6px;
-    }
-
-    .fsp-meta-field {
-      flex: 1;
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 8px;
-      padding: 7px 9px;
-    }
-
-    .fsp-meta-label {
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: #52525E;
-      margin-bottom: 2px;
-    }
-
-    .fsp-meta-val {
-      font-size: 12px;
-      font-weight: 500;
-      color: #fff;
-    }
-
-    .fsp-diff-row {
-      display: flex;
-      gap: 4px;
-    }
-
-    .fsp-diff-btn {
-      flex: 1;
-      font-size: 10px;
-      font-weight: 500;
-      border-radius: 7px;
-      border: 1px solid #2A2A30;
-      padding: 6px 3px;
-      text-align: center;
-      color: #52525E;
-    }
-
-    .fsp-diff-active {
-      background: rgba(62, 255, 139, 0.1);
-      border-color: rgba(62, 255, 139, 0.3);
-      color: #3EFF8B;
-    }
-
-    .fsp-notes {
-      background: #1C1C20;
-      border: 1px solid #2A2A30;
-      border-radius: 8px;
-      padding: 9px 11px;
-    }
-
-    .fsp-notes-label {
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: #52525E;
-      margin-bottom: 5px;
-    }
-
-    .fsp-notes-text {
-      font-size: 11px;
-      font-weight: 300;
-      color: #7B7B8A;
-      line-height: 1.6;
-    }
-
-    .fsp-save-btn {
-      background: #C8FF3E;
-      color: #0D0D0F;
-      border-radius: 8px;
-      padding: 10px;
-      font-family: 'Syne', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      text-align: center;
-    }
-
-    /* checklist typed animation */
-    .fsp-check-row {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 0;
-      border-bottom: 1px solid #2A2A30;
-    }
-
-    .fsp-check-row:last-child {
-      border-bottom: none;
-    }
-
-    .fsp-chk {
-      width: 14px;
-      height: 14px;
-      border-radius: 4px;
-      border: 1.5px solid #2A2A30;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 8px;
-      font-weight: 700;
-      color: #0D0D0F;
-      flex-shrink: 0;
-      transition: all 0.3s ease;
-    }
-
-    .fsp-chk.on {
-      background: #C8FF3E;
-      border-color: #C8FF3E;
-    }
-
-    .fsp-chk-text {
-      font-size: 11px;
-      color: #E8E8F0;
-      transition: color 0.3s;
-    }
-
-    .fsp-chk-text.done {
-      color: #52525E;
-      text-decoration: line-through;
-    }
-
-    /* ─── RESPONSIVE TWEAKS ─── */
-    @media(max-width:600px) {
-      .section {
-        padding: 56px 18px;
-      }
-
-      .form-row {
-        flex-direction: column;
-      }
-
-      .hero-title {
-        letter-spacing: -1.5px;
-      }
-
-      .pricing-wrap {
-        max-width: 100%;
-      }
-
-      .steps-wrap {
-        max-width: 100%;
-      }
-
-      .testi {
-        padding: 20px 18px;
-      }
-
-      .testi-quote {
-        font-size: 13px;
-        margin-bottom: 16px;
-      }
-
-      .testi-grid {
-        margin-top: 32px;
-      }
-
-      .pain-grid {
-        margin-top: 32px;
-      }
-
-      .feat-grid {
-        margin-top: 32px;
-      }
-    }
-
-    @media(max-width:400px) {
-      nav {
-        padding: 12px 16px;
-      }
-
-      .nav-logo {
-        font-size: 16px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
@@ -2535,7 +54,7 @@
 
     <div class="hero-form-wrap" id="hero-form-wrap">
       <form id="hero-form" onsubmit="submitForm(event,'hero')">
-        <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="inline-style-1">
           <div class="form-row">
             <input type="text" class="finput" placeholder="Seu nome" required id="hero-name" autocomplete="given-name">
             <input type="email" class="finput" placeholder="Seu email" required id="hero-email" autocomplete="email">
@@ -2556,10 +75,10 @@
 
     <div class="social-proof" aria-label="Prova social">
       <div class="avatars" aria-hidden="true">
-        <div class="av" style="background:#5C9EFF">R</div>
-        <div class="av" style="background:#C8FF3E">M</div>
-        <div class="av" style="background:#FF5C5C">A</div>
-        <div class="av" style="background:#FFB830">L</div>
+        <div class="av inline-style-2">R</div>
+        <div class="av inline-style-3">M</div>
+        <div class="av inline-style-4">A</div>
+        <div class="av inline-style-5">L</div>
       </div>
       <p class="sp-text"><strong>247 músicos</strong> já garantiram o acesso antecipado</p>
     </div>
@@ -2685,17 +204,14 @@
 
   <!-- ════ FEAT: DASHBOARD ════ -->
   <section class="feat-spot" aria-labelledby="feat-dash-heading">
-    <div
-      style="display:grid;gap:48px;align-items:center;max-width:1080px;margin:0 auto;grid-template-columns:auto 1fr;">
-      <div style="display:flex;justify-content:center;">
-        <div
-          style="width:280px;height:540px;background:#141416;border-radius:40px;border:1.5px solid #2A2A30;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 40px 80px rgba(0,0,0,0.6);">
-          <div
-            style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:88px;height:26px;background:#0D0D0F;border-radius:16px;z-index:20;">
+    <div class="inline-style-6">
+      <div class="inline-style-7">
+        <div class="inline-style-8">
+          <div class="inline-style-9">
           </div>
           <div class="fsp-screen">
             <div class="fsp-status"><span>9:41</span>
-              <div style="display:flex;gap:4px;align-items:center;"><svg width="13" height="10" viewBox="0 0 16 12"
+              <div class="inline-style-10"><svg width="13" height="10" viewBox="0 0 16 12"
                   fill="currentColor">
                   <rect x="0" y="3" width="3" height="9" rx="1" />
                   <rect x="4.5" y="2" width="3" height="10" rx="1" />
@@ -2707,49 +223,45 @@
                 </svg></div>
             </div>
             <div class="fsp-body">
-              <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div class="inline-style-11">
                 <div>
                   <div class="fsp-heading">Olá, Dani 👋</div>
-                  <div class="fsp-sub" style="margin-top:2px;">Segunda, 24 fev</div>
+                  <div class="fsp-sub inline-style-12">Segunda, 24 fev</div>
                 </div>
-                <div
-                  style="width:28px;height:28px;border-radius:50%;background:#1C1C20;border:1px solid #2A2A30;display:flex;align-items:center;justify-content:center;font-size:12px;">
+                <div class="inline-style-13">
                   🎸</div>
               </div>
               <!-- countdown card -->
-              <div class="fsp-card"
-                style="background:linear-gradient(135deg,#1A2800,#0F1E00);border-color:rgba(200,255,62,0.2);">
-                <div class="fsp-label" style="color:#C8FF3E;">Próximo show</div>
-                <div
-                  style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1;">
-                  48:00 <span style="font-size:11px;font-weight:400;color:#7B7B8A;">horas</span></div>
-                <div style="font-size:10px;color:#7B7B8A;margin-top:4px;">Casamento Ferreira · Sáb 22 fev</div>
+              <div class="fsp-card inline-style-14">
+                <div class="fsp-label inline-style-15">Próximo show</div>
+                <div class="inline-style-16">
+                  48:00 <span class="inline-style-17">horas</span></div>
+                <div class="inline-style-18">Casamento Ferreira · Sáb 22 fev</div>
                 <div class="fsp-prog-track" id="dash-prog">
                   <div class="fsp-prog-fill" id="dash-prog-fill"></div>
                 </div>
-                <div style="font-size:9px;color:#7B7B8A;margin-top:5px;">Repertório <span
-                    style="color:#C8FF3E;font-weight:700;">68%</span> pronto</div>
+                <div class="inline-style-19">Repertório <span class="inline-style-20">68%</span> pronto</div>
               </div>
               <!-- fin grid -->
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+              <div class="inline-style-21">
                 <div class="fsp-card">
-                  <div class="fsp-fin-val" style="color:#3EFF8B;">R$2.800</div>
-                  <div style="font-size:9px;color:#7B7B8A;margin-top:2px;">Recebido</div>
+                  <div class="fsp-fin-val inline-style-22">R$2.800</div>
+                  <div class="inline-style-23">Recebido</div>
                 </div>
                 <div class="fsp-card">
-                  <div class="fsp-fin-val" style="color:#FFB830;">R$1.400</div>
-                  <div style="font-size:9px;color:#7B7B8A;margin-top:2px;">A receber</div>
+                  <div class="fsp-fin-val inline-style-24">R$1.400</div>
+                  <div class="inline-style-23">A receber</div>
                 </div>
               </div>
               <!-- shows -->
               <div class="fsp-label">Próximos shows</div>
-              <div style="display:flex;flex-direction:column;gap:5px;">
+              <div class="inline-style-25">
                 <div class="fsp-show-row">
                   <div class="fsp-show-date">
                     <div class="fsp-show-day">22</div>
                     <div class="fsp-show-month">fev</div>
                   </div>
-                  <div style="flex:1;min-width:0;">
+                  <div class="inline-style-26">
                     <div class="fsp-show-name">Casamento Ferreira</div>
                     <div class="fsp-show-meta">Quinta das Flores</div>
                   </div><span class="fsp-badge-red">48h</span>
@@ -2759,7 +271,7 @@
                     <div class="fsp-show-day">01</div>
                     <div class="fsp-show-month">mar</div>
                   </div>
-                  <div style="flex:1;min-width:0;">
+                  <div class="inline-style-26">
                     <div class="fsp-show-name">Bar do Porto</div>
                     <div class="fsp-show-meta">Cabo Frio · 22h</div>
                   </div><span class="fsp-badge-gold">6 dias</span>
@@ -2769,7 +281,7 @@
                     <div class="fsp-show-day">08</div>
                     <div class="fsp-show-month">mar</div>
                   </div>
-                  <div style="flex:1;min-width:0;">
+                  <div class="inline-style-26">
                     <div class="fsp-show-name">Festa 15 anos</div>
                     <div class="fsp-show-meta">Clube Náutico</div>
                   </div><span class="fsp-badge-green">13 dias</span>
@@ -2801,7 +313,7 @@
           </div>
         </div>
       </div>
-      <div style="min-width:0;">
+      <div class="inline-style-27">
         <span class="feat-spot-tag">Dashboard</span>
         <h2 class="feat-spot-title" id="feat-dash-heading">Sua agenda,<br>seu dinheiro,<br><em>tudo num lugar.</em></h2>
         <p class="feat-spot-sub">Abriu o app, você já sabe: qual show está chegando, quanto falta para estar pronto e
@@ -2828,9 +340,8 @@
 
   <!-- ════ FEAT: MÚSICAS ════ -->
   <section class="feat-spot" aria-labelledby="feat-musicas-heading">
-    <div
-      style="display:grid;gap:48px;align-items:center;max-width:1080px;margin:0 auto;grid-template-columns:1fr auto;">
-      <div style="min-width:0;">
+    <div class="inline-style-28">
+      <div class="inline-style-27">
         <span class="feat-spot-tag">Músicas do show</span>
         <h2 class="feat-spot-title" id="feat-musicas-heading">Você sabe<br>exatamente<br><em>o que estudar.</em></h2>
         <p class="feat-spot-sub">Cada música tem seu status. Verde dominada, amarelo atenção, vermelho não sei. Em
@@ -2850,51 +361,46 @@
           </div>
         </div>
       </div>
-      <div style="display:flex;justify-content:center;">
-        <div
-          style="width:280px;height:540px;background:#141416;border-radius:40px;border:1.5px solid #2A2A30;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 40px 80px rgba(0,0,0,0.6);">
-          <div
-            style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:88px;height:26px;background:#0D0D0F;border-radius:16px;z-index:20;">
+      <div class="inline-style-7">
+        <div class="inline-style-8">
+          <div class="inline-style-9">
           </div>
           <div class="fsp-screen">
             <div class="fsp-status"><span>9:41</span></div>
-            <div
-              style="padding:4px 13px 0;font-size:10px;color:#7B7B8A;display:flex;align-items:center;gap:5px;flex-shrink:0;">
+            <div class="inline-style-29">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M15 18l-6-6 6-6" />
-              </svg>Casamento Ferreira</div>
-            <div class="fsp-body" style="padding-top:8px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;">
+              </svg>Casamento Ferreira
+            </div>
+            <div class="fsp-body inline-style-30">
+              <div class="inline-style-11">
                 <div class="fsp-heading">Músicas do show</div>
                 <span class="fsp-badge-red">48h</span>
               </div>
-              <div style="display:flex;gap:5px;">
-                <div
-                  style="flex:1;background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:8px 10px;font-size:10px;color:#52525E;">
+              <div class="inline-style-31">
+                <div class="inline-style-32">
                   Buscar ou adicionar…</div>
-                <div
-                  style="width:32px;height:32px;border-radius:8px;background:#C8FF3E;display:flex;align-items:center;justify-content:center;font-size:16px;color:#0D0D0F;font-weight:300;flex-shrink:0;">
+                <div class="inline-style-33">
                   +</div>
               </div>
               <!-- legend -->
-              <div
-                style="background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:7px 10px;display:flex;gap:10px;flex-wrap:wrap;">
-                <div style="display:flex;align-items:center;gap:4px;font-size:9px;color:#7B7B8A;">
-                  <div style="width:5px;height:5px;border-radius:50%;background:#3EFF8B;"></div>Dominada
+              <div class="inline-style-34">
+                <div class="inline-style-35">
+                  <div class="inline-style-36"></div>Dominada
                 </div>
-                <div style="display:flex;align-items:center;gap:4px;font-size:9px;color:#7B7B8A;">
-                  <div style="width:5px;height:5px;border-radius:50%;background:#FFB830;"></div>Atenção
+                <div class="inline-style-35">
+                  <div class="inline-style-37"></div>Atenção
                 </div>
-                <div style="display:flex;align-items:center;gap:4px;font-size:9px;color:#7B7B8A;">
-                  <div style="width:5px;height:5px;border-radius:50%;background:#FF5C5C;"></div>Não sei
+                <div class="inline-style-35">
+                  <div class="inline-style-38"></div>Não sei
                 </div>
               </div>
               <!-- music list animated -->
-              <div style="display:flex;flex-direction:column;gap:5px;" id="musicas-list">
+              <div class="inline-style-25" id="musicas-list">
                 <div class="fsp-music-card fsp-mc-green" data-delay="0">
                   <div class="fsp-music-inner">
                     <div class="fsp-music-num">1</div>
-                    <div style="flex:1;min-width:0;">
+                    <div class="inline-style-26">
                       <div class="fsp-music-title">Garota de Ipanema</div>
                       <div class="fsp-music-artist">Tom Jobim</div>
                     </div><span class="fsp-tag fsp-tag-green">Dominada</span>
@@ -2903,7 +409,7 @@
                 <div class="fsp-music-card fsp-mc-gold" data-delay="150">
                   <div class="fsp-music-inner">
                     <div class="fsp-music-num">2</div>
-                    <div style="flex:1;min-width:0;">
+                    <div class="inline-style-26">
                       <div class="fsp-music-title">Evidências</div>
                       <div class="fsp-music-artist">Chitãozinho & Xororó</div>
                     </div><span class="fsp-tag fsp-tag-gold">Atenção</span>
@@ -2912,7 +418,7 @@
                 <div class="fsp-music-card fsp-mc-red" data-delay="300">
                   <div class="fsp-music-inner">
                     <div class="fsp-music-num">3</div>
-                    <div style="flex:1;min-width:0;">
+                    <div class="inline-style-26">
                       <div class="fsp-music-title">Asa Branca</div>
                       <div class="fsp-music-artist">Luiz Gonzaga</div>
                     </div><span class="fsp-tag fsp-tag-red">Não sei</span>
@@ -2921,7 +427,7 @@
                 <div class="fsp-music-card fsp-mc-green" data-delay="450">
                   <div class="fsp-music-inner">
                     <div class="fsp-music-num">4</div>
-                    <div style="flex:1;min-width:0;">
+                    <div class="inline-style-26">
                       <div class="fsp-music-title">Ain't No Sunshine</div>
                       <div class="fsp-music-artist">Bill Withers</div>
                     </div><span class="fsp-tag fsp-tag-green">Dominada</span>
@@ -2930,7 +436,7 @@
                 <div class="fsp-music-card fsp-mc-gold" data-delay="600">
                   <div class="fsp-music-inner">
                     <div class="fsp-music-num">5</div>
-                    <div style="flex:1;min-width:0;">
+                    <div class="inline-style-26">
                       <div class="fsp-music-title">Medley Axé 90s</div>
                       <div class="fsp-music-artist">Vários artistas</div>
                     </div><span class="fsp-tag fsp-tag-gold">Atenção</span>
@@ -2968,100 +474,83 @@
 
   <!-- ════ FEAT: ANOTAÇÕES ════ -->
   <section class="feat-spot" aria-labelledby="feat-anot-heading">
-    <div
-      style="display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;max-width:1080px;margin:0 auto;">
+    <div class="inline-style-39">
 
       <!-- phone LEFT -->
-      <div style="display:flex;justify-content:center;">
-        <div
-          style="width:280px;height:540px;background:#141416;border-radius:40px;border:1.5px solid #2A2A30;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 40px 80px rgba(0,0,0,0.6);">
-          <div
-            style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:88px;height:26px;background:#0D0D0F;border-radius:16px;z-index:20;">
+      <div class="inline-style-7">
+        <div class="inline-style-8">
+          <div class="inline-style-9">
           </div>
           <!-- screen -->
-          <div style="position:absolute;inset:0;overflow:hidden;background:#0D0D0F;">
+          <div class="inline-style-40">
             <!-- bg rows -->
-            <div
-              style="position:absolute;inset:0;padding:52px 14px 0;display:flex;flex-direction:column;gap:7px;z-index:0;">
-              <div style="height:34px;background:#1C1C20;border-radius:8px;border-left:2px solid #3EFF8B;"></div>
-              <div style="height:34px;background:#1C1C20;border-radius:8px;border-left:2px solid #FFB830;opacity:0.6;">
+            <div class="inline-style-41">
+              <div class="inline-style-42"></div>
+              <div class="inline-style-43">
               </div>
-              <div style="height:34px;background:#1C1C20;border-radius:8px;border-left:2px solid #FF5C5C;opacity:0.3;">
+              <div class="inline-style-44">
               </div>
             </div>
             <!-- fade -->
-            <div
-              style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(13,13,15,0.9) 55%);z-index:1;pointer-events:none;">
+            <div class="inline-style-45">
             </div>
             <!-- bottom sheet -->
-            <div id="anot-sheet"
-              style="position:absolute;left:0;right:0;bottom:0;transform:translateY(15%);transition:transform 0.55s cubic-bezier(0.32,0.72,0,1);background:#141416;border-radius:18px 18px 0 0;border-top:1px solid #2A2A30;z-index:10;">
-              <div style="width:28px;height:3px;border-radius:2px;background:#2A2A30;margin:8px auto;"></div>
-              <div style="padding:8px 14px 12px;display:flex;flex-direction:column;gap:7px;">
+            <div class="inline-style-46" id="anot-sheet">
+              <div class="inline-style-47"></div>
+              <div class="inline-style-48">
                 <div>
-                  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;">Garota de
+                  <div class="inline-style-49">Garota de
                     Ipanema</div>
-                  <div style="font-size:9px;color:#7B7B8A;margin-top:1px;">Tom Jobim / Vinícius</div>
+                  <div class="inline-style-50">Tom Jobim / Vinícius</div>
                 </div>
-                <div style="display:flex;gap:6px;">
-                  <div style="flex:1;background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:6px 8px;">
-                    <div
-                      style="font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:1px;">
+                <div class="inline-style-51">
+                  <div class="inline-style-52">
+                    <div class="inline-style-53">
                       Tom</div>
-                    <div style="font-size:12px;font-weight:500;color:#fff;">Fá Maior</div>
+                    <div class="inline-style-54">Fá Maior</div>
                   </div>
-                  <div style="flex:1;background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:6px 8px;">
-                    <div
-                      style="font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:1px;">
+                  <div class="inline-style-52">
+                    <div class="inline-style-53">
                       BPM</div>
-                    <div style="font-size:12px;font-weight:500;color:#fff;">138</div>
+                    <div class="inline-style-54">138</div>
                   </div>
                 </div>
-                <div style="display:flex;gap:4px;">
-                  <div
-                    style="flex:1;font-size:8px;font-weight:600;border-radius:6px;padding:5px 2px;text-align:center;background:rgba(62,255,139,0.1);border:1px solid rgba(62,255,139,0.3);color:#3EFF8B;">
+                <div class="inline-style-55">
+                  <div class="inline-style-56">
                     ✓ Dominada</div>
-                  <div
-                    style="flex:1;font-size:8px;font-weight:500;border-radius:6px;padding:5px 2px;text-align:center;border:1px solid #2A2A30;color:#52525E;">
+                  <div class="inline-style-57">
                     ⚡ Atenção</div>
-                  <div
-                    style="flex:1;font-size:8px;font-weight:500;border-radius:6px;padding:5px 2px;text-align:center;border:1px solid #2A2A30;color:#52525E;">
+                  <div class="inline-style-57">
                     ✗ Não sei</div>
                 </div>
-                <div style="background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:8px 10px;">
-                  <div
-                    style="font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:4px;">
+                <div class="inline-style-58">
+                  <div class="inline-style-59">
                     Anotações</div>
-                  <div style="font-size:10px;font-weight:300;color:#7B7B8A;line-height:1.5;">Intro 4 compassos bossa
+                  <div class="inline-style-60">Intro 4 compassos bossa
                     nova. Cliente pediu 120 BPM.</div>
                 </div>
                 <div>
-                  <div
-                    style="font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:4px;">
+                  <div class="inline-style-59">
                     Checklist</div>
-                  <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #1C1C20;">
-                    <div id="chk-0"
-                      style="width:14px;height:14px;border-radius:4px;border:1.5px solid #2A2A30;flex-shrink:0;transition:all 0.3s;">
+                  <div class="inline-style-61">
+                    <div class="inline-style-62" id="chk-0">
                     </div>
-                    <span id="chkt-0" style="font-size:10px;color:#E8E8F0;transition:color 0.3s;">Revisar intro</span>
+                    <span class="inline-style-63" id="chkt-0">Revisar intro</span>
                   </div>
-                  <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #1C1C20;">
-                    <div id="chk-1"
-                      style="width:14px;height:14px;border-radius:4px;border:1.5px solid #2A2A30;flex-shrink:0;transition:all 0.3s;">
+                  <div class="inline-style-61">
+                    <div class="inline-style-62" id="chk-1">
                     </div>
-                    <span id="chkt-1" style="font-size:10px;color:#E8E8F0;transition:color 0.3s;">Cifra no tom
+                    <span class="inline-style-63" id="chkt-1">Cifra no tom
                       certo</span>
                   </div>
-                  <div style="display:flex;align-items:center;gap:7px;padding:5px 0;">
-                    <div id="chk-2"
-                      style="width:14px;height:14px;border-radius:4px;border:1.5px solid #2A2A30;flex-shrink:0;transition:all 0.3s;">
+                  <div class="inline-style-64">
+                    <div class="inline-style-62" id="chk-2">
                     </div>
-                    <span id="chkt-2" style="font-size:10px;color:#E8E8F0;transition:color 0.3s;">Arranjo do
+                    <span class="inline-style-63" id="chkt-2">Arranjo do
                       final</span>
                   </div>
                 </div>
-                <div
-                  style="background:#C8FF3E;color:#0D0D0F;border-radius:8px;padding:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-align:center;">
+                <div class="inline-style-65">
                   Salvar anotações</div>
               </div>
             </div>
@@ -3070,7 +559,7 @@
       </div>
 
       <!-- copy RIGHT -->
-      <div style="min-width:0;">
+      <div class="inline-style-27">
         <span class="feat-spot-tag">Anotações</span>
         <h2 class="feat-spot-title" id="feat-anot-heading">Tudo que<br>importa,<br><em>na hora certa.</em></h2>
         <p class="feat-spot-sub">Tom personalizado por contratante, andamento, observações do arranjo, medley,
@@ -3151,7 +640,7 @@
 
   <!-- ════ FEATURES ════ -->
   <section class="features-bg" aria-labelledby="features-heading">
-    <div class="section" style="padding-bottom:0">
+    <div class="section inline-style-66">
       <div class="reveal reveal-head">
         <p class="section-tag">A solução</p>
         <h2 class="section-title" id="features-heading">Gestão de show do jeito que o freelancer precisa.</h2>
@@ -3229,7 +718,7 @@
 
       </div>
     </div>
-    <div style="height:96px;"></div>
+    <div class="inline-style-67"></div>
   </section>
 
   <!-- ════ COMO FUNCIONA ════ -->
@@ -3292,7 +781,7 @@
         <p class="testi-quote">"Recebi 25 músicas pra um casamento na quinta, show era sábado. Usando o SetMaster eu
           sabia exatamente quais estudar primeiro. Cheguei no show tranquilo — coisa que nunca acontecia antes."</p>
         <div class="testi-author">
-          <div class="testi-av" style="background:#5C9EFF;color:#fff;">R</div>
+          <div class="testi-av inline-style-68">R</div>
           <div>
             <div class="testi-name">Rafael M.</div>
             <div class="testi-role">Violonista freelancer · Rio de Janeiro</div>
@@ -3303,7 +792,7 @@
         <p class="testi-quote">"Eu fazia tudo no caderno. O controle de cachê era uma bagunça total. Agora eu sei
           exatamente quanto ganhei no mês, quem já pagou e quem está enrolando. Vale só por isso."</p>
         <div class="testi-author">
-          <div class="testi-av" style="background:#C8FF3E;color:#0D0D0F;">A</div>
+          <div class="testi-av inline-style-69">A</div>
           <div>
             <div class="testi-name">Ana Paula S.</div>
             <div class="testi-role">Cantora · São Paulo</div>
@@ -3314,7 +803,7 @@
         <p class="testi-quote">"A gente toca em casamentos, baladas, eventos corporativos. Cada contratante pede um
           estilo diferente. O repertório organizado por contratante mudou tudo na hora de montar o setlist."</p>
         <div class="testi-author">
-          <div class="testi-av" style="background:#FFB830;color:#0D0D0F;">L</div>
+          <div class="testi-av inline-style-70">L</div>
           <div>
             <div class="testi-name">Lucas & Banda Nordeste</div>
             <div class="testi-role">Conjunto musical · Fortaleza</div>
@@ -3325,7 +814,7 @@
   </section>
 
   <!-- ════ PREÇOS ════ -->
-  <section class="section" aria-labelledby="pricing-heading" style="padding-top:0">
+  <section class="section inline-style-71" aria-labelledby="pricing-heading">
     <div class="reveal reveal-head">
       <p class="section-tag">Planos</p>
       <h2 class="section-title" id="pricing-heading">Grátis para começar. Pro quando você crescer.</h2>
@@ -3343,9 +832,9 @@
           <li><span class="chk-ico">✓</span>Setlist manual</li>
           <li><span class="chk-ico">✓</span>Repertório até 20 músicas</li>
           <li><span class="chk-ico">✓</span>Financeiro básico</li>
-          <li><span class="chk-ico" style="opacity:.25">—</span><span style="opacity:.35">Import por foto (OCR)</span>
+          <li><span class="chk-ico inline-style-72">—</span><span class="inline-style-73">Import por foto (OCR)</span>
           </li>
-          <li><span class="chk-ico" style="opacity:.25">—</span><span style="opacity:.35">Histórico completo</span></li>
+          <li><span class="chk-ico inline-style-72">—</span><span class="inline-style-73">Histórico completo</span></li>
         </ul>
         <button class="plan-btn plan-btn-free" onclick="scrollToForm()">Entrar na lista gratuita</button>
       </div>
@@ -3353,18 +842,18 @@
       <!-- PRO -->
       <div class="plan plan-pro">
         <div class="plan-badge">Recomendado</div>
-        <div class="plan-name" style="color:#C8FF3E">Pro</div>
-        <div class="plan-price" style="color:#C8FF3E">
-          R$19<span style="color:#6A8A20">,90/mês</span>
+        <div class="plan-name inline-style-74">Pro</div>
+        <div class="plan-price inline-style-74">
+          R$19<span class="inline-style-75">,90/mês</span>
         </div>
-        <p class="plan-sub" style="color:#5A7820">ou R$179/ano — 2 meses grátis</p>
+        <p class="plan-sub inline-style-76">ou R$179/ano — 2 meses grátis</p>
         <ul class="plan-features">
           <li><span class="chk-ico">✓</span>Shows ilimitados</li>
           <li><span class="chk-ico">✓</span>Import por foto (OCR inteligente)</li>
           <li><span class="chk-ico">✓</span>Repertório ilimitado + anotações</li>
           <li><span class="chk-ico">✓</span>Financeiro completo + histórico</li>
           <li><span class="chk-ico">✓</span>Alertas de pagamentos em aberto</li>
-          <li><span class="chk-ico">✓</span><strong style="color:var(--accent)">Preço de fundador — travado para
+          <li><span class="chk-ico">✓</span><strong class="inline-style-77">Preço de fundador — travado para
               sempre</strong></li>
         </ul>
         <button class="plan-btn plan-btn-pro" onclick="scrollToForm()">Garantir meu preço de fundador</button>
@@ -3390,8 +879,7 @@
     </p>
 
     <div class="final-form reveal" id="final-form-wrap">
-      <form id="final-form" onsubmit="submitForm(event,'final')"
-        style="width:100%;display:flex;flex-direction:column;gap:10px;">
+      <form class="inline-style-78" id="final-form" onsubmit="submitForm(event,'final')">
         <input type="text" class="finput" placeholder="Seu nome" required id="final-name" autocomplete="given-name">
         <input type="email" class="finput" placeholder="Seu email" required id="final-email" autocomplete="email">
         <input type="tel" class="finput" placeholder="WhatsApp (opcional)" id="final-phone" autocomplete="tel">
