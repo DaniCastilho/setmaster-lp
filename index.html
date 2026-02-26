@@ -1822,8 +1822,8 @@
       max-width: 1080px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 72px;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
       align-items: center;
     }
 
@@ -1935,8 +1935,6 @@
 
     /* phone side */
     .feat-spot-phone-wrap {
-      position: relative;
-      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -2687,35 +2685,14 @@
 
   <!-- ════ FEAT: DASHBOARD ════ -->
   <section class="feat-spot" aria-labelledby="feat-dash-heading">
-    <div class="feat-spot-inner reverse"
-      style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;max-width:1080px;margin:0 auto;">
-      <div class="feat-spot-copy" style="order:2;min-width:0;">
-        <span class="feat-spot-tag">Dashboard</span>
-        <h2 class="feat-spot-title" id="feat-dash-heading">
-          Sua agenda,<br>seu dinheiro,<br><em>tudo num lugar.</em>
-        </h2>
-        <p class="feat-spot-sub">Abriu o app, você já sabe: qual show está chegando, quanto falta para estar pronto e
-          quanto tem a receber. Sem planilha, sem caderno.</p>
-        <div class="feat-spot-bullets">
-          <div class="feat-spot-bullet">
-            <div class="feat-spot-bullet-icon">⏱</div>
-            <div><strong>Countdown automático</strong> — o app sabe quantas horas faltam e destaca os shows mais
-              urgentes.</div>
+    <div
+      style="display:grid;gap:48px;align-items:center;max-width:1080px;margin:0 auto;grid-template-columns:auto 1fr;">
+      <div style="display:flex;justify-content:center;">
+        <div
+          style="width:280px;height:540px;background:#141416;border-radius:40px;border:1.5px solid #2A2A30;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 40px 80px rgba(0,0,0,0.6);">
+          <div
+            style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:88px;height:26px;background:#0D0D0F;border-radius:16px;z-index:20;">
           </div>
-          <div class="feat-spot-bullet">
-            <div class="feat-spot-bullet-icon">💰</div>
-            <div><strong>Financeiro em tempo real</strong> — recebido vs. a receber, separados por show.</div>
-          </div>
-          <div class="feat-spot-bullet">
-            <div class="feat-spot-bullet-icon">📅</div>
-            <div><strong>Agenda cronológica</strong> — próximos shows em ordem, com alerta visual para os mais próximos.
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- phone: right -->
-      <div class="feat-spot-phone-wrap" style="order:1;display:flex;justify-content:center;">
-        <div class="feat-spot-phone">
           <div class="fsp-screen">
             <div class="fsp-status"><span>9:41</span>
               <div style="display:flex;gap:4px;align-items:center;"><svg width="13" height="10" viewBox="0 0 16 12"
@@ -2824,19 +2801,38 @@
           </div>
         </div>
       </div>
+      <div style="min-width:0;">
+        <span class="feat-spot-tag">Dashboard</span>
+        <h2 class="feat-spot-title" id="feat-dash-heading">Sua agenda,<br>seu dinheiro,<br><em>tudo num lugar.</em></h2>
+        <p class="feat-spot-sub">Abriu o app, você já sabe: qual show está chegando, quanto falta para estar pronto e
+          quanto tem a receber. Sem planilha, sem caderno.</p>
+        <div class="feat-spot-bullets">
+          <div class="feat-spot-bullet">
+            <div class="feat-spot-bullet-icon">⏱</div>
+            <div><strong>Countdown automático</strong> — o app sabe quantas horas faltam e destaca os shows mais
+              urgentes.</div>
+          </div>
+          <div class="feat-spot-bullet">
+            <div class="feat-spot-bullet-icon">💰</div>
+            <div><strong>Financeiro em tempo real</strong> — recebido vs. a receber, separados por show.</div>
+          </div>
+          <div class="feat-spot-bullet">
+            <div class="feat-spot-bullet-icon">📅</div>
+            <div><strong>Agenda cronológica</strong> — próximos shows em ordem, com alerta visual para os mais próximos.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ════ FEAT: MÚSICAS ════ -->
   <section class="feat-spot" aria-labelledby="feat-musicas-heading">
-    <div class="feat-spot-inner"
-      style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;max-width:1080px;margin:0 auto;">
-      <!-- copy: left -->
-      <div class="feat-spot-copy" style="min-width:0;">
+    <div
+      style="display:grid;gap:48px;align-items:center;max-width:1080px;margin:0 auto;grid-template-columns:1fr auto;">
+      <div style="min-width:0;">
         <span class="feat-spot-tag">Músicas do show</span>
-        <h2 class="feat-spot-title" id="feat-musicas-heading">
-          Você sabe<br>exatamente<br><em>o que estudar.</em>
-        </h2>
+        <h2 class="feat-spot-title" id="feat-musicas-heading">Você sabe<br>exatamente<br><em>o que estudar.</em></h2>
         <p class="feat-spot-sub">Cada música tem seu status. Verde dominada, amarelo atenção, vermelho não sei. Em
           segundos você sabe onde focar as próximas horas.</p>
         <div class="feat-spot-bullets">
@@ -2854,16 +2850,19 @@
           </div>
         </div>
       </div>
-      <div class="feat-spot-phone-wrap" style="display:flex;justify-content:center;">
-        <div class="feat-spot-phone">
+      <div style="display:flex;justify-content:center;">
+        <div
+          style="width:280px;height:540px;background:#141416;border-radius:40px;border:1.5px solid #2A2A30;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 40px 80px rgba(0,0,0,0.6);">
+          <div
+            style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:88px;height:26px;background:#0D0D0F;border-radius:16px;z-index:20;">
+          </div>
           <div class="fsp-screen">
             <div class="fsp-status"><span>9:41</span></div>
             <div
               style="padding:4px 13px 0;font-size:10px;color:#7B7B8A;display:flex;align-items:center;gap:5px;flex-shrink:0;">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M15 18l-6-6 6-6" />
-              </svg>Casamento Ferreira
-            </div>
+              </svg>Casamento Ferreira</div>
             <div class="fsp-body" style="padding-top:8px;">
               <div style="display:flex;align-items:center;justify-content:space-between;">
                 <div class="fsp-heading">Músicas do show</div>
@@ -2969,13 +2968,111 @@
 
   <!-- ════ FEAT: ANOTAÇÕES ════ -->
   <section class="feat-spot" aria-labelledby="feat-anot-heading">
-    <div class="feat-spot-inner reverse"
-      style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;max-width:1080px;margin:0 auto;">
-      <div class="feat-spot-copy" style="order:2;min-width:0;">
+    <div
+      style="display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;max-width:1080px;margin:0 auto;">
+
+      <!-- phone LEFT -->
+      <div style="display:flex;justify-content:center;">
+        <div
+          style="width:280px;height:540px;background:#141416;border-radius:40px;border:1.5px solid #2A2A30;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 40px 80px rgba(0,0,0,0.6);">
+          <div
+            style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:88px;height:26px;background:#0D0D0F;border-radius:16px;z-index:20;">
+          </div>
+          <!-- screen -->
+          <div style="position:absolute;inset:0;overflow:hidden;background:#0D0D0F;">
+            <!-- bg rows -->
+            <div
+              style="position:absolute;inset:0;padding:52px 14px 0;display:flex;flex-direction:column;gap:7px;z-index:0;">
+              <div style="height:34px;background:#1C1C20;border-radius:8px;border-left:2px solid #3EFF8B;"></div>
+              <div style="height:34px;background:#1C1C20;border-radius:8px;border-left:2px solid #FFB830;opacity:0.6;">
+              </div>
+              <div style="height:34px;background:#1C1C20;border-radius:8px;border-left:2px solid #FF5C5C;opacity:0.3;">
+              </div>
+            </div>
+            <!-- fade -->
+            <div
+              style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(13,13,15,0.9) 55%);z-index:1;pointer-events:none;">
+            </div>
+            <!-- bottom sheet -->
+            <div id="anot-sheet"
+              style="position:absolute;left:0;right:0;bottom:0;transform:translateY(15%);transition:transform 0.55s cubic-bezier(0.32,0.72,0,1);background:#141416;border-radius:18px 18px 0 0;border-top:1px solid #2A2A30;z-index:10;">
+              <div style="width:28px;height:3px;border-radius:2px;background:#2A2A30;margin:8px auto;"></div>
+              <div style="padding:8px 14px 12px;display:flex;flex-direction:column;gap:7px;">
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;">Garota de
+                    Ipanema</div>
+                  <div style="font-size:9px;color:#7B7B8A;margin-top:1px;">Tom Jobim / Vinícius</div>
+                </div>
+                <div style="display:flex;gap:6px;">
+                  <div style="flex:1;background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:6px 8px;">
+                    <div
+                      style="font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:1px;">
+                      Tom</div>
+                    <div style="font-size:12px;font-weight:500;color:#fff;">Fá Maior</div>
+                  </div>
+                  <div style="flex:1;background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:6px 8px;">
+                    <div
+                      style="font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:1px;">
+                      BPM</div>
+                    <div style="font-size:12px;font-weight:500;color:#fff;">138</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:4px;">
+                  <div
+                    style="flex:1;font-size:8px;font-weight:600;border-radius:6px;padding:5px 2px;text-align:center;background:rgba(62,255,139,0.1);border:1px solid rgba(62,255,139,0.3);color:#3EFF8B;">
+                    ✓ Dominada</div>
+                  <div
+                    style="flex:1;font-size:8px;font-weight:500;border-radius:6px;padding:5px 2px;text-align:center;border:1px solid #2A2A30;color:#52525E;">
+                    ⚡ Atenção</div>
+                  <div
+                    style="flex:1;font-size:8px;font-weight:500;border-radius:6px;padding:5px 2px;text-align:center;border:1px solid #2A2A30;color:#52525E;">
+                    ✗ Não sei</div>
+                </div>
+                <div style="background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:8px 10px;">
+                  <div
+                    style="font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:4px;">
+                    Anotações</div>
+                  <div style="font-size:10px;font-weight:300;color:#7B7B8A;line-height:1.5;">Intro 4 compassos bossa
+                    nova. Cliente pediu 120 BPM.</div>
+                </div>
+                <div>
+                  <div
+                    style="font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:4px;">
+                    Checklist</div>
+                  <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #1C1C20;">
+                    <div id="chk-0"
+                      style="width:14px;height:14px;border-radius:4px;border:1.5px solid #2A2A30;flex-shrink:0;transition:all 0.3s;">
+                    </div>
+                    <span id="chkt-0" style="font-size:10px;color:#E8E8F0;transition:color 0.3s;">Revisar intro</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #1C1C20;">
+                    <div id="chk-1"
+                      style="width:14px;height:14px;border-radius:4px;border:1.5px solid #2A2A30;flex-shrink:0;transition:all 0.3s;">
+                    </div>
+                    <span id="chkt-1" style="font-size:10px;color:#E8E8F0;transition:color 0.3s;">Cifra no tom
+                      certo</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;padding:5px 0;">
+                    <div id="chk-2"
+                      style="width:14px;height:14px;border-radius:4px;border:1.5px solid #2A2A30;flex-shrink:0;transition:all 0.3s;">
+                    </div>
+                    <span id="chkt-2" style="font-size:10px;color:#E8E8F0;transition:color 0.3s;">Arranjo do
+                      final</span>
+                  </div>
+                </div>
+                <div
+                  style="background:#C8FF3E;color:#0D0D0F;border-radius:8px;padding:9px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-align:center;">
+                  Salvar anotações</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- copy RIGHT -->
+      <div style="min-width:0;">
         <span class="feat-spot-tag">Anotações</span>
-        <h2 class="feat-spot-title" id="feat-anot-heading">
-          Tudo que<br>importa,<br><em>na hora certa.</em>
-        </h2>
+        <h2 class="feat-spot-title" id="feat-anot-heading">Tudo que<br>importa,<br><em>na hora certa.</em></h2>
         <p class="feat-spot-sub">Tom personalizado por contratante, andamento, observações do arranjo, medley,
           combinados. Tudo salvo e disponível no dia do show.</p>
         <div class="feat-spot-bullets">
@@ -2993,106 +3090,7 @@
           </div>
         </div>
       </div>
-      <!-- phone: right -->
-      <div class="feat-spot-phone-wrap" style="order:1;display:flex;justify-content:center;">
-        <div class="feat-spot-phone" style="overflow:hidden;">
-          <div class="fsp-screen" style="position:relative;overflow:hidden;">
-            <!-- dimmed bg: blurred music rows -->
-            <div
-              style="position:absolute;inset:0;background:#0D0D0F;z-index:0;padding:52px 14px 0;display:flex;flex-direction:column;gap:7px;">
-              <div style="height:34px;background:#1C1C20;border-radius:8px;border-left:2px solid #3EFF8B;"></div>
-              <div style="height:34px;background:#1C1C20;border-radius:8px;border-left:2px solid #FFB830;"></div>
-              <div style="height:34px;background:#1C1C20;border-radius:8px;border-left:2px solid #FF5C5C;opacity:0.5;">
-              </div>
-            </div>
-            <!-- gradient fade -->
-            <div
-              style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,13,15,0.2) 0%,rgba(13,13,15,0.85) 40%);z-index:1;pointer-events:none;">
-            </div>
-            <!-- bottom sheet: starts 20% down so top is visible -->
-            <div
-              style="position:absolute;left:0;right:0;bottom:0;transform:translateY(20%);transition:transform 0.55s cubic-bezier(0.32,0.72,0,1);background:#141416;border-radius:18px 18px 0 0;border-top:1px solid #2A2A30;z-index:10;"
-              id="anot-sheet">
-              <div style="width:28px;height:3px;border-radius:2px;background:#2A2A30;margin:8px auto 0;"></div>
-              <div style="padding:10px 14px 16px;display:flex;flex-direction:column;gap:8px;">
-                <div>
-                  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;">Garota de
-                    Ipanema</div>
-                  <div style="font-size:10px;color:#7B7B8A;margin-top:1px;">Tom Jobim / Vinícius</div>
-                </div>
-                <div style="display:flex;gap:6px;">
-                  <div style="flex:1;background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:7px 9px;">
-                    <div
-                      style="font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:2px;">
-                      Tom</div>
-                    <div style="font-size:12px;font-weight:500;color:#fff;">Fá Maior</div>
-                  </div>
-                  <div style="flex:1;background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:7px 9px;">
-                    <div
-                      style="font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:2px;">
-                      BPM</div>
-                    <div style="font-size:12px;font-weight:500;color:#fff;">138</div>
-                  </div>
-                </div>
-                <div>
-                  <div
-                    style="font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:5px;">
-                    Como estou?</div>
-                  <div style="display:flex;gap:4px;">
-                    <div
-                      style="flex:1;font-size:9px;font-weight:600;border-radius:7px;padding:6px 3px;text-align:center;background:rgba(62,255,139,0.1);border:1px solid rgba(62,255,139,0.3);color:#3EFF8B;">
-                      ✓ Dominada</div>
-                    <div
-                      style="flex:1;font-size:9px;font-weight:500;border-radius:7px;padding:6px 3px;text-align:center;border:1px solid #2A2A30;color:#52525E;">
-                      ⚡ Atenção</div>
-                    <div
-                      style="flex:1;font-size:9px;font-weight:500;border-radius:7px;padding:6px 3px;text-align:center;border:1px solid #2A2A30;color:#52525E;">
-                      ✗ Não sei</div>
-                  </div>
-                </div>
-                <div style="background:#1C1C20;border:1px solid #2A2A30;border-radius:8px;padding:9px 11px;">
-                  <div
-                    style="font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:5px;">
-                    Anotações</div>
-                  <div style="font-size:10px;font-weight:300;color:#7B7B8A;line-height:1.6;">Intro 4 compassos bossa
-                    nova. Cliente pediu 120 BPM.</div>
-                </div>
-                <div>
-                  <div
-                    style="font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#52525E;margin-bottom:4px;">
-                    Checklist</div>
-                  <div id="anot-checks">
-                    <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #2A2A30;">
-                      <div id="chk-0"
-                        style="width:14px;height:14px;border-radius:4px;border:1.5px solid #2A2A30;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#0D0D0F;flex-shrink:0;transition:all 0.3s;">
-                      </div>
-                      <span id="chkt-0" style="font-size:10px;color:#E8E8F0;transition:color 0.3s;">Revisar intro</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #2A2A30;">
-                      <div id="chk-1"
-                        style="width:14px;height:14px;border-radius:4px;border:1.5px solid #2A2A30;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#0D0D0F;flex-shrink:0;transition:all 0.3s;">
-                      </div>
-                      <span id="chkt-1" style="font-size:10px;color:#E8E8F0;transition:color 0.3s;">Cifra no tom
-                        certo</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:7px;padding:5px 0;">
-                      <div id="chk-2"
-                        style="width:14px;height:14px;border-radius:4px;border:1.5px solid #2A2A30;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#0D0D0F;flex-shrink:0;transition:all 0.3s;">
-                      </div>
-                      <span id="chkt-2" style="font-size:10px;color:#E8E8F0;transition:color 0.3s;">Arranjo do
-                        final</span>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  style="background:#C8FF3E;color:#0D0D0F;border-radius:8px;padding:10px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;text-align:center;">
-                  Salvar anotações</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
     </div>
   </section>
 
