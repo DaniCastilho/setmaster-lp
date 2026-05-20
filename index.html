@@ -915,12 +915,38 @@
     }
 
     // Form submit
-    function submitForm(e, id) {
+    async function submitForm(e, id) {
       e.preventDefault();
+
       var form = document.getElementById(id + '-form');
       var msg = document.getElementById(id + '-success');
-      if (form) form.style.display = 'none';
-      if (msg) msg.classList.add('show');
+      var btn = form ? form.querySelector('button[type=submit]') : null;
+
+      var name  = (document.getElementById(id + '-name')  || {}).value || '';
+      var email = (document.getElementById(id + '-email') || {}).value || '';
+      var phone = (document.getElementById(id + '-phone') || {}).value || '';
+
+      if (btn) { btn.disabled = true; btn.textContent = 'Enviando…'; }
+
+      try {
+        var res = await fetch('/.netlify/functions/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: name, email: email, phone: phone }),
+        });
+
+        if (res.ok) {
+          if (form) form.style.display = 'none';
+          if (msg) msg.classList.add('show');
+        } else {
+          var data = await res.json();
+          throw new Error(data.error || 'Erro desconhecido');
+        }
+      } catch (err) {
+        console.error('Erro ao enviar:', err);
+        if (btn) { btn.disabled = false; btn.textContent = '🎸  Quero acesso antecipado — de graça'; }
+        alert('Ops! Não conseguimos te cadastrar agora. Tente novamente em instantes.');
+      }
     }
 
 
