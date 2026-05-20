@@ -16,7 +16,7 @@
       --red: #FF5C5C;
       --blue: #5C9EFF;
       --r: 16px;
-      --font-head: 'Syne', sans-serif;
+      --font-head: 'Plus Jakarta Sans', sans-serif;
       --font-body: 'DM Sans', sans-serif;
     }
 
@@ -203,7 +203,7 @@
       font-size: clamp(32px, 5.5vw, 62px);
       font-weight: 800;
       color: var(--bright);
-      letter-spacing: -2px;
+      letter-spacing: -0.5px;
       line-height: 1.05;
       max-width: 720px;
       position: relative;
@@ -391,7 +391,7 @@
       font-size: clamp(24px, 3.5vw, 40px);
       font-weight: 800;
       color: var(--bright);
-      letter-spacing: -1px;
+      letter-spacing: -0.3px;
       line-height: 1.1;
       max-width: 800px;
       margin: 0 auto;
@@ -1114,7 +1114,7 @@
     }
 
     .ms-heading {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 16px;
       font-weight: 700;
       color: #fff;
@@ -1149,7 +1149,7 @@
     }
 
     .ms-countdown-time {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 24px;
       font-weight: 800;
       color: #fff;
@@ -1185,7 +1185,7 @@
     }
 
     .ms-show-day {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 15px;
       font-weight: 800;
       color: #fff;
@@ -1199,7 +1199,7 @@
     }
 
     .ms-show-name {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 11px;
       font-weight: 700;
       color: #fff;
@@ -1320,7 +1320,7 @@
     }
 
     .ms-music-num {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 10px;
       font-weight: 700;
       color: #52525E;
@@ -1330,7 +1330,7 @@
     }
 
     .ms-music-title {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 11px;
       font-weight: 700;
       color: #fff;
@@ -1729,7 +1729,7 @@
     }
 
     .ocr-result-num {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 10px;
       font-weight: 700;
       color: #52525E;
@@ -1744,7 +1744,7 @@
     }
 
     .ocr-result-title {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 11px;
       font-weight: 700;
       color: #fff;
@@ -2023,7 +2023,7 @@
 
     /* shared mini components */
     .fsp-heading {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 15px;
       font-weight: 700;
       color: #fff;
@@ -2103,7 +2103,7 @@
     }
 
     .fsp-fin-val {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 16px;
       font-weight: 700;
       letter-spacing: -0.5px;
@@ -2125,7 +2125,7 @@
     }
 
     .fsp-show-day {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 14px;
       font-weight: 800;
       color: #fff;
@@ -2139,7 +2139,7 @@
     }
 
     .fsp-show-name {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 10px;
       font-weight: 700;
       color: #fff;
@@ -2201,7 +2201,7 @@
     }
 
     .fsp-music-num {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 9px;
       font-weight: 700;
       color: #52525E;
@@ -2210,7 +2210,7 @@
     }
 
     .fsp-music-title {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 10px;
       font-weight: 700;
       color: #fff;
@@ -2287,7 +2287,7 @@
     }
 
     .fsp-sheet-title {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 13px;
       font-weight: 700;
       color: #fff;
@@ -2377,7 +2377,7 @@
       color: #0D0D0F;
       border-radius: 8px;
       padding: 10px;
-      font-family: 'Syne', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 12px;
       font-weight: 700;
       text-align: center;
@@ -2438,7 +2438,7 @@
       }
 
       .hero-title {
-        letter-spacing: -1.5px;
+        letter-spacing: -0.5px;
       }
 
       .pricing-wrap {
@@ -2579,7 +2579,7 @@
 }
 
 .inline-style-16 {
-  font-family:'Syne',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   font-size:22px;
   font-weight:800;
   color:#fff;
@@ -2822,7 +2822,7 @@
 }
 
 .inline-style-49 {
-  font-family:'Syne',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   font-size:13px;
   font-weight:700;
   color:#fff;
@@ -2948,7 +2948,7 @@
   color:#0D0D0F;
   border-radius:8px;
   padding:9px;
-  font-family:'Syne',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   font-size:11px;
   font-weight:700;
   text-align:center;
